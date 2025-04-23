@@ -17,4 +17,10 @@ Aplicación web para administrar productos, categorías, usuarios y reseñas de 
 ## 🚀 Instalación
 1. Clonar repositorio en `htdocs` de XAMPP:
 ```bash
-git clone https://gitlab.com/tu-usuario/InstrumentosLLaneros.git
+instalar las dependencias
+composer install
+```
+2. Configurar base de datos poniendo el sql de "tienda_llanera.sql" importarlo en phpmyadmin
+mediante XAMPP 
+
+git clone https://gitlab.com/troinc/InstrumentosLLaneros.git
