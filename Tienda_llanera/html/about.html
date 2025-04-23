@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Melodía Llanera</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .about-container {
+            max-width: 1000px;
+            margin: 120px auto 40px;
+            padding: 2rem;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .about-content {
+            display: grid;
+            gap: 3rem;
+            color: var(--text-color);
+        }
+
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .about-section:nth-child(even) {
+            direction: rtl;
+        }
+
+        .about-section:nth-child(even) .about-text {
+            direction: ltr;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .about-text h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .values-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-card {
+            padding: 2rem;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .value-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .team-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .team-member h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-container">
+                <h1>Melodía Llanera</h1>
+            </div>
+            <div class="nav-links">
+                <!-- Se cambia de /index.html a /InstrumentosLLaneros/index.php -->
+                <a href="http://localhost/InstrumentosLLaneros/index.php">Inicio</a>
+                <a href="products.html">Productos</a>
+                <a href="about.html" class="active">Nosotros</a>
+                <a href="contact.html">Contacto</a>
+            </div>
+            <div class="nav-actions">
+                <a href="login.html" class="auth-link">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="about-container">
+            <div class="about-header">
+                <h2>Sobre Nosotros</h2>
+                <p>Preservando y compartiendo la rica tradición musical llanera</p>
+            </div>
+            <div class="about-content">
+                <div class="about-section">
+                    <img src="https://i.scdn.co/image/ab67616d0000b273f559e6a5f2e982b0cd2f0e7f" alt="Música tradicional colombiana" class="about-image">
+                    <div class="about-text">
+                        <h3>Nuestra Historia</h3>
+                        <p>Melodía Llanera nació en 2010 con la visión de preservar y promover la rica tradición musical de los llanos colombianos. Fundada por maestros artesanos y músicos apasionados, nuestra tienda se ha convertido en un referente en la fabricación y comercialización de instrumentos llaneros de la más alta calidad.</p>
+                        <p>A lo largo de los años, hemos trabajado incansablemente para mantener vivas las técnicas tradicionales de fabricación, mientras incorporamos innovaciones que mejoran la calidad y durabilidad de nuestros instrumentos.</p>
+                    </div>
+                </div>
+                <div class="about-section">
+                    <img src="https://colombiaartesanal.com.co/wp-content/uploads/ARTESANIAS-6-24.jpg" alt="Artesanías colombianas" class="about-image">
+                    <div class="about-text">
+                        <h3>Nuestra Misión</h3>
+                        <p>Nos dedicamos a proporcionar instrumentos llaneros de la más alta calidad, manteniendo viva la tradición musical colombiana. Trabajamos para que cada instrumento que sale de nuestro taller sea una obra maestra que inspire a nuevas generaciones de músicos.</p>
+                        <p>Además de la venta de instrumentos, nos comprometemos a educar y compartir el conocimiento sobre la música llanera, ofreciendo asesoría experta y respaldo continuo a nuestros clientes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="values-section">
+               
+                <div class="values-grid">
+                    <div class="value-card">
+                        <i class="fas fa-heart"></i>
+                        <h4>Pasión por la Tradición</h4>
+                        <p>Mantenemos vivo el legado de la música llanera, preservando técnicas ancestrales.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fas fa-star"></i>
+                        <h4>Excelencia Artesanal</h4>
+                        <p>Cada instrumento es elaborado con dedicación y los más altos estándares de calidad.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fas fa-handshake"></i>
+                        <h4>Compromiso con el Cliente</h4>
+                        <p>Brindamos asesoría personalizada y garantía en todos nuestros productos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Melodía Llanera</h3>
+                <p>Tu tienda de instrumentos llaneros en Colombia</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <a href="products.html">Productos</a>
+                <a href="about.html">Sobre Nosotros</a>
+                <a href="contact.html">Contacto</a>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Melodía Llanera. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

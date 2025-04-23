@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Melodía Llanera</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .contact-container {
+            max-width: 1000px;
+            margin: 120px auto 40px;
+            padding: 2rem;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            padding: 2rem;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            margin: 0 auto; /* Centra el bloque */
+            text-align: center; /* Centra el texto */
+        }
+
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column; /* apilar ícono y texto verticalmente */
+            align-items: center; /* centrar ícono y textos horizontalmente */
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .info-item div h4 {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item div p {
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .contact-form h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #dddddd00;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: var(--accent-color);
+        }
+
+        .social-contact {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .social-contact h4 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-container">
+                <h1>Melodía Llanera</h1>
+            </div>
+            <div class="nav-links">
+                <!-- Se cambia de /index.html a /InstrumentosLLaneros/index.php -->
+                <a href="http://localhost/InstrumentosLLaneros/index.php">Inicio</a>
+                <a href="products.html">Productos</a>
+                <a href="about.html">Nosotros</a>
+                <a href="contact.html" class="active">Contacto</a>
+            </div>
+            <div class="nav-actions">
+                <a href="login.html" class="auth-link">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="contact-container">
+            <div class="contact-header">
+                <h2>Contáctanos</h2>
+                <p>Estamos aquí para ayudarte con cualquier consulta sobre nuestros instrumentos</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Ubicación</h4>
+                            <p>Villavicencio, Colombia</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Teléfono</h4>
+                            <p>+57 3123813187</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Correo Electrónico</h4>
+                            <p>info@melodiallanera.com<br>ventas@melodiallanera.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Horario de Atención</h4>
+                            <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Se eliminó el formulario de contacto -->
+            </div>
+            <div class="social-contact">
+                <h4>Síguenos en Redes Sociales</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Melodía Llanera</h3>
+                <p>Tu tienda de instrumentos llaneros en Colombia</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <a href="products.html">Productos</a>
+                <a href="about.html">Sobre Nosotros</a>
+                <a href="contact.html">Contacto</a>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        image.png        <div class="footer-bottom">
+            <p>&copy; 2025 Melodía Llanera. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

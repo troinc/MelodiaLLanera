@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Melodía Llanera</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .products-container {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .products-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .products-header h2 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .products-header p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Estilos base de las tarjetas (aplicables dentro y fuera del slider) */
+        .product-card {
+             background-color: var(--secondary-color);
+             border-radius: 15px;
+             overflow: hidden;
+             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+             text-align: center;
+             border: 1px solid rgba(255, 255, 255, 0.1);
+             display: flex;
+             flex-direction: column;
+             justify-content: space-between;
+        }
+         .product-card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.15);
+         }
+         .product-image img {
+             width: 100%;
+             height: 250px;
+             object-fit: cover;
+         }
+         .product-info {
+             padding: 1.5rem;
+             flex-grow: 1;
+             display: flex;
+             flex-direction: column;
+             justify-content: space-between;
+         }
+         .product-info h3 {
+             font-size: 1.2rem;
+             margin-bottom: 0.8rem;
+             color: var(--white);
+             height: 2.4em;
+             line-height: 1.2em;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             display: -webkit-box;
+             -webkit-line-clamp: 2;
+             -webkit-box-orient: vertical;
+         }
+         .product-info .price {
+             font-size: 1.3rem;
+             color: var(--primary-color);
+             font-weight: 600;
+             margin-bottom: 1.2rem;
+         }
+
+        .details-button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .details-button:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* --- Slider Styles --- */
+        .product-slider-container {
+            position: relative;
+            width: 90%;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+
+        .product-slider {
+            overflow: hidden;
+        }
+
+        .product-slider .products-grid { /* Grid dentro del slider */
+            display: flex;
+            grid-template-columns: none; /* Anular grid */
+            width: max-content;
+            gap: 2rem;
+            padding: 10px 0;
+            transition: transform 0.5s ease-in-out;
+            margin: 0;
+            max-width: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .product-slider .product-card { /* Tarjetas dentro del slider */
+            flex: 0 0 auto;
+            width: 300px; /* Ancho fijo */
+            margin-bottom: 0;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        .slider-btn:hover:not(:disabled) {
+            background-color: var(--grey); /* Cambiar a gris del sitio */
+            border: 1px solid var(--dark-grey); /* Añadir borde sutil */
+        }
+        .slider-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        /* Aumentar separación de las flechas */
+        .prev-btn { left: -25px; } 
+        .next-btn { right: -25px; }
+        /* --- Fin Slider Styles --- */
+
+        /* Estilos del Modal (se mantienen) */
+        .product-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1100; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        .modal-content { position: relative; background-color: var(--secondary-color); margin: 5% auto; padding: 2rem; width: 90%; max-width: 900px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform: translateY(20px); opacity: 0; transition: all 0.3s ease; }
+        .product-modal.active .modal-content { transform: translateY(0); opacity: 1; }
+        .close-modal { position: absolute; right: 1rem; top: 1rem; font-size: 2rem; color: var(--white); cursor: pointer; transition: color 0.3s ease; }
+        .close-modal:hover { color: var(--primary-color); }
+        .modal-body { color: var(--white); display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start; }
+        .modal-image-container { width: 100%; }
+        .modal-image-container img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; }
+        .modal-details { text-align: left; }
+        .modal-details h2 { color: var(--primary-color); margin-bottom: 1rem; font-size: 1.8rem; }
+        .modal-details .price { font-size: 1.5rem; color: var(--accent-color); margin-bottom: 1.5rem; }
+        .product-specs { background: rgba(0, 0, 0, 0.2); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem; }
+        .spec-item { display: flex; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .spec-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .spec-label { color: var(--text-color); font-weight: 500; }
+        .spec-value { color: var(--primary-color); }
+        @media (max-width: 768px) { .modal-body { grid-template-columns: 1fr; gap: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-container"><h1>Melodía Llanera</h1></div>
+            <div class="nav-links">
+                <a href="http://localhost/InstrumentosLLaneros/index.php">Inicio</a>
+                <a href="products.html" class="active">Productos</a>
+                <a href="about.html">Nosotros</a>
+                <a href="contact.html">Contacto</a>
+            </div>
+            <div class="nav-actions"><a href="login.html" class="auth-link">Login</a></div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="products-container">
+            <div class="products-header">
+                <h2>Nuestros Instrumentos</h2>
+                <p>Descubre nuestra selección de auténticos instrumentos llaneros colombianos</p>
+            </div>
+
+            <!-- Contenedor del Slider de Productos -->
+            <div class="product-slider-container">
+                <button class="slider-btn prev-btn" aria-label="Producto anterior"><i class="fas fa-chevron-left"></i></button>
+                <div class="product-slider">
+                    <!-- Grid donde se insertarán los productos -->
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Productos se insertan aquí por JS -->
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" aria-label="Siguiente producto"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <!-- Fin Contenedor del Slider -->
+
+            <!-- Modal para detalles del producto -->
+            <div class="product-modal" id="productModal">
+                 <div class="modal-content">
+                    <span class="close-modal" aria-label="Cerrar modal">&times;</span>
+                    <div class="modal-body">
+                        <div class="modal-image-container">
+                            <img id="modalImage" src="" alt="Imagen del producto">
+                        </div>
+                        <div class="modal-details">
+                            <h2 id="modalTitle"></h2>
+                            <p class="price" id="modalPrice"></p>
+                            <p id="modalDescription"></p>
+                            <div class="product-specs">
+                                <div class="spec-item">
+                                    <span class="spec-label">Peso</span>
+                                    <span class="spec-value" id="modalWeight">N/A</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Material</span>
+                                    <span class="spec-value" id="modalMaterial">N/A</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Dimensiones</span>
+                                    <span class="spec-value" id="modalDimensions">N/A</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Origen</span>
+                                    <span class="spec-value" id="modalOrigin">Colombia</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div style="text-align: center; padding: 2rem; color: var(--text-color); font-style: italic; max-width: 800px; margin: 0 auto;">
+        <p>Todo esto sigue siendo una practica, aun esta en desarollo, luego se agregara imagenes de los productos reales</p>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section"><h3>Melodía Llanera</h3><p>Tu tienda de instrumentos llaneros en Colombia</p></div>
+            <div class="footer-section"><h3>Enlaces Rápidos</h3><a href="products.html">Productos</a><a href="about.html">Sobre Nosotros</a><a href="contact.html">Contacto</a></div>
+            <div class="footer-section"><h3>Síguenos</h3><div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a></div></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 Melodía Llanera. Todos los derechos reservados.</p></div>
+    </footer>
+
+    <!-- Script para generar productos, manejar slider y modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productsGrid = document.getElementById('productsGrid');
+            const sliderContainer = document.querySelector('.product-slider-container');
+            const slider = document.querySelector('.product-slider');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            // Datos estáticos de productos (incluyendo placeholders para detalles)
+            const staticProductsData = {
+                '1': { name: 'Arpa Llanera Profesional', price: 2500000, description: 'El arpa llanera es uno de los instrumentos más emblemáticos...', image: 'https://placehold.co/300x300/png?text=Arpa+Llanera', weight: '8 kg', material: 'Cedro seleccionado', dimensions: '145cm alto' },
+                '2': { name: 'Cuatro Llanero', price: 800000, description: 'El cuatro llanero es un instrumento tradicional...', image: 'https://placehold.co/300x300/png?text=Cuatro+Llanero', weight: '1.5 kg', material: 'Caoba', dimensions: '75cm largo' },
+                '4': { name: 'Bandola Llanera', price: 1200000, description: 'La bandola llanera es un instrumento tradicional...', image: 'https://placehold.co/300x300/png?text=Bandola+Llanera', weight: '2 kg', material: 'Pino', dimensions: '80cm largo' },
+                '9': { name: 'Guitarra Criolla', price: 900000, description: 'La guitarra criolla es un instrumento tradicional...', image: 'https://placehold.co/300x300/png?text=Guitarra+Criolla', weight: '2.2 kg', material: 'Caoba', dimensions: '100cm largo' },
+                '10': { name: 'Bajo Quinto Tradicional', price: 1800000, description: 'El bajo quinto es un instrumento tradicional...', image: 'https://placehold.co/300x300/png?text=Bajo+Quinto', weight: '3 kg', material: 'Pino', dimensions: '105cm largo' },
+                '11': { name: 'Requinto Llanero', price: 750000, description: 'El requinto llanero es un instrumento tradicional...', image: 'https://placehold.co/300x300/png?text=Requinto+Llanero', weight: '1.4 kg', material: 'Caoba', dimensions: '70cm largo' },
+                '14': { name: 'Tiple Colombiano', price: 650000, description: 'El tiple es fundamental en la música andina colombiana...', image: 'https://placehold.co/300x300/png?text=Tiple+Colombiano', weight: '1.8 kg', material: 'Cedro', dimensions: '95cm largo' },
+                '15': { name: 'Mandolina Artesanal', price: 950000, description: 'Ideal para música folclórica y clásica...', image: 'https://placehold.co/300x300/png?text=Mandolina', weight: '1.2 kg', material: 'Pino abeto, arce', dimensions: '65cm largo' },
+                '3': { name: 'Maracas Artesanales', price: 150000, description: 'Las maracas son instrumentos de percusión...', image: 'https://placehold.co/300x300/png?text=Maracas', weight: '0.5 kg (par)', material: 'Calabaza, madera', dimensions: '25cm largo (c/u)' },
+                '5': { name: 'Capachos Tradicionales', price: 180000, description: 'Los capachos son instrumentos de percusión...', image: 'https://placehold.co/300x300/png?text=Capachos', weight: '0.6 kg (par)', material: 'Madera, cuero', dimensions: '30cm largo (c/u)' },
+                '6': { name: 'Furruco Artesanal', price: 450000, description: 'El furruco es un instrumento de percusión...', image: 'https://placehold.co/300x300/png?text=Furruco', weight: '4 kg', material: 'Madera, cuero', dimensions: '60cm alto' },
+                '7': { name: 'Tambora Llanera', price: 350000, description: 'La tambora llanera es un instrumento de percusión...', image: 'https://placehold.co/300x300/png?text=Tambora', weight: '5 kg', material: 'Madera, cuero', dimensions: '40cm diámetro' },
+                '8': { name: 'Charrasca de Metal', price: 120000, description: 'La charrasca es un instrumento de percusión...', image: 'https://placehold.co/300x300/png?text=Charrasca', weight: '0.8 kg', material: 'Metal', dimensions: '40cm largo' },
+                '12': { name: 'Cajón Peruano', price: 280000, description: 'El cajón peruano es un instrumento de percusión...', image: 'https://placehold.co/300x300/png?text=Cajon+Peruano', weight: '4.5 kg', material: 'Madera contrachapada', dimensions: '48x30x30 cm' },
+                '13': { name: 'Güiro Profesional', price: 95000, description: 'Esencial en ritmos latinos como salsa y cumbia...', image: 'https://placehold.co/300x300/png?text=Guiro', weight: '0.4 kg', material: 'Calabaza', dimensions: '35cm largo' },
+                '16': { name: 'Flauta Llanera Tradicional', price: 350000, description: 'La flauta llanera es un instrumento de viento...', image: 'https://placehold.co/300x300/png?text=Flauta+Llanera', weight: '0.3 kg', material: 'Madera', dimensions: '50cm largo' },
+                '17': { name: 'Quena Tradicional', price: 280000, description: 'La quena es una flauta tradicional de los Andes...', image: 'https://placehold.co/300x300/png?text=Quena', weight: '0.2 kg', material: 'Bambú', dimensions: '40cm largo' },
+                '18': { name: 'Sistro del Llano', price: 90000, description: 'Instrumento de percusión tradicional del llano...', image: 'https://placehold.co/300x300/png?text=Sistro', weight: '0.3 kg', material: 'Bronce, madera', dimensions: '25cm largo' },
+                '19': { name: 'Quitiplas Tradicionales', price: 200000, description: 'Instrumento de percusión formado por tubos de bambú...', image: 'https://placehold.co/300x300/png?text=Quitiplas', weight: '1 kg (set)', material: 'Bambú', dimensions: 'Varios (hasta 60cm)' }
+            };
+
+            // --- Renderizar Productos ---
+            function renderProducts() {
+                if (!productsGrid) return;
+                productsGrid.innerHTML = ''; // Limpiar
+                const productIds = Object.keys(staticProductsData);
+
+                if (productIds.length === 0) {
+                    productsGrid.innerHTML = '<p style="width: 100%; text-align: center;">No hay productos disponibles.</p>';
+                    return;
+                }
+
+                productIds.forEach(id => {
+                    const product = staticProductsData[id];
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.dataset.productId = id;
+
+                    const formattedPrice = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(product.price);
+
+                    card.innerHTML = `
+                        <div class="product-image">
+                             <img src="${product.image}" alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="price">${formattedPrice}</p>
+                            <button class="details-button">Ver detalles</button>
+                        </div>
+                    `;
+                    card.querySelector('.details-button').addEventListener('click', () => {
+                         openProductModal(id); // Pasar ID al modal
+                    });
+                    productsGrid.appendChild(card);
+                });
+            }
+
+            // --- Lógica del Slider ---
+            function initializeSlider() {
+                const cards = productsGrid.querySelectorAll('.product-card');
+                if (!slider || !productsGrid || !prevBtn || !nextBtn || cards.length === 0) {
+                    console.log("Slider no inicializado: Faltan elementos o productos.");
+                     if(prevBtn) prevBtn.style.display = 'none';
+                     if(nextBtn) nextBtn.style.display = 'none';
+                    return;
+                }
+
+                let cardWidth = 0;
+                let gap = 0;
+                let scrollAmount = 0;
+                let sliderWidth = 0;
+                let gridWidth = 0;
+
+                function calculateDimensions() {
+                    if (cards.length > 0) {
+                        cardWidth = cards[0].offsetWidth;
+                        const gridStyle = getComputedStyle(productsGrid);
+                        gap = parseFloat(gridStyle.gap) || 32; // Usar 32px (2rem) si gap no se puede calcular
+                    }
+                    sliderWidth = slider.offsetWidth;
+                    gridWidth = productsGrid.scrollWidth;
+                }
+
+                function updateSliderState() {
+                    calculateDimensions();
+
+                    prevBtn.disabled = scrollAmount <= 0;
+                    nextBtn.disabled = scrollAmount >= gridWidth - sliderWidth - 5; // Margen de 5px
+
+                    const needsScroll = gridWidth > sliderWidth + 5;
+                    prevBtn.style.display = needsScroll ? 'flex' : 'none';
+                    nextBtn.style.display = needsScroll ? 'flex' : 'none';
+                }
+
+                prevBtn.addEventListener('click', () => {
+                    calculateDimensions();
+                    const cardsToScroll = Math.max(1, Math.floor(sliderWidth / (cardWidth + gap)));
+                    scrollAmount -= cardsToScroll * (cardWidth + gap);
+                    if (scrollAmount < 0) scrollAmount = 0;
+                    productsGrid.style.transform = `translateX(-${scrollAmount}px)`;
+                    updateSliderState();
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    calculateDimensions();
+                    const cardsToScroll = Math.max(1, Math.floor(sliderWidth / (cardWidth + gap)));
+                    scrollAmount += cardsToScroll * (cardWidth + gap);
+                    if (scrollAmount > gridWidth - sliderWidth) {
+                        scrollAmount = gridWidth - sliderWidth;
+                    }
+                    if (scrollAmount < 0) scrollAmount = 0; // Asegurar que no sea negativo
+
+                    productsGrid.style.transform = `translateX(-${scrollAmount}px)`;
+                    updateSliderState();
+                });
+
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        scrollAmount = 0;
+                        productsGrid.style.transform = `translateX(0px)`;
+                        updateSliderState();
+                    }, 150);
+                });
+
+                // Esperar un poco a que las imágenes carguen y se calcule el ancho real
+                setTimeout(updateSliderState, 300);
+                window.addEventListener('load', updateSliderState); // También al cargar todo
+            }
+
+            // --- Lógica del Modal ---
+            const modal = document.getElementById('productModal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalPrice = document.getElementById('modalPrice');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalWeight = document.getElementById('modalWeight');
+            const modalMaterial = document.getElementById('modalMaterial');
+            const modalDimensions = document.getElementById('modalDimensions');
+
+            function openProductModal(productId) {
+                const product = staticProductsData[productId];
+                if (!modal || !product) return;
+
+                modalTitle.textContent = product.name;
+                modalPrice.textContent = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(product.price);
+                modalDescription.textContent = product.description || 'Descripción no disponible.';
+                modalImage.src = product.image || 'https://placehold.co/400x400/png?text=Imagen+no+disponible';
+                modalImage.alt = product.name;
+
+                // Llenar detalles adicionales con placeholders
+                modalWeight.textContent = product.weight || 'No especificado';
+                modalMaterial.textContent = product.material || 'No especificado';
+                modalDimensions.textContent = product.dimensions || 'No especificado';
+
+                modal.style.display = 'block';
+                void modal.offsetWidth;
+                modal.classList.add('active');
+            }
+
+            if(modal && closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                     modal.classList.remove('active');
+                     setTimeout(() => { modal.style.display = 'none'; }, 300);
+                });
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                         modal.classList.remove('active');
+                         setTimeout(() => { modal.style.display = 'none'; }, 300);
+                    }
+                });
+            }
+
+            // Renderizar productos e inicializar slider al cargar
+            renderProducts();
+            initializeSlider();
+
+        });
+    </script>
+</body>
+</html>

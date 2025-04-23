@@ -1,0 +1,26 @@
+[
+    {
+        "cod_prod": "PROD001",
+        "nom_prod": "Arpa Llanera",
+        "desc_prod": "Instrumento musical tradicional de los llanos venezolanos",
+        "precio_prod": 1200000,
+        "stock_prod": 5,
+        "cod_cat": "CAT001"
+    },
+    {
+        "cod_prod": "PROD002",
+        "nom_prod": "Cuatro Llanero",
+        "desc_prod": "Instrumento de cuatro cuerdas típico de la música llanera",
+        "precio_prod": 850000,
+        "stock_prod": 8,
+        "cod_cat": "CAT001"
+    },
+    {
+        "cod_prod": "PROD003",
+        "nom_prod": "Maracas",
+        "desc_prod": "Pareja de maracas tradicionales en madera",
+        "precio_prod": 150000,
+        "stock_prod": 15,
+        "cod_cat": "CAT002"
+    }
+]
