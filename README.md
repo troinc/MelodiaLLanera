@@ -1,4 +1,4 @@
-# Sistema de Gestión para Tienda de Instrumentos Llaneros
+# Tienda de Instrumentos Llaneros
 
 Aplicación web para administrar productos, categorías, usuarios y reseñas de una tienda especializada en instrumentos musicales tradicionales.
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSave, FiSettings, FiCreditCard, FiTruck, FiUsers, FiDollarSign, FiPercent, FiLink, FiUserPlus, FiPalette } from 'react-icons/fi'; // Añadir nuevos iconos
 
 // Interfaz para los datos de configuración
