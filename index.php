@@ -17,7 +17,7 @@ ini_set('display_errors', 1);
         .product-card:hover {
             border: 2px solid #ff9966;
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(128, 128, 128, 0.5);
+            
             transition: all 0.3s ease;
         }
     </style>

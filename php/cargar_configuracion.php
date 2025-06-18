@@ -1,7 +1,7 @@
 <?php
-// Suprimir errores de PHP en la salida, pero permitir logging si está configurado
-error_reporting(0);
-ini_set('display_errors', 0);
+// Habilitar errores de PHP para depuración
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Establecer cabeceras JSON y CORS
 header('Content-Type: application/json');
@@ -11,7 +11,7 @@ header('Access-Control-Allow-Origin: *'); // Ajustar en producción
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "instrumentos_llaneros_db";
+$dbname = "tienda_llanera"; // Corregido para coincidir con conexion.php
 
 $conn = null; // Inicializar conexión fuera del try
 

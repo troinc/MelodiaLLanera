@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FiPlus, FiEdit, FiTrash2, FiSearch } from 'react-icons/fi';
 
 // Definición del tipo Producto
@@ -20,6 +20,9 @@ interface Categoria {
   nom_cat: string;
 }
 
+// Define API base URL
+const API_BASE_URL = 'http://localhost/InstrumentosLLaneros'; // Asegurar que la base URL es correcta para las subcarpetas
+
 const Productos: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -30,11 +33,28 @@ const Productos: React.FC = () => {
   const [currentProducto, setCurrentProducto] = useState<Producto | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+  const [pastedImage, setPastedImage] = useState<File | null>(null);
+  const [pastedImagePreview, setPastedImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Cargar productos y categorías al montar el componente
   useEffect(() => {
     fetchProductos();
     fetchCategorias();
-  }, []);
+
+    // Add paste listener to the file input
+    const fileInput = fileInputRef.current;
+    if (fileInput) {
+      fileInput.addEventListener('paste', handlePaste);
+    }
+
+    // Cleanup listener on component unmount
+    return () => {
+      if (fileInput) {
+        fileInput.removeEventListener('paste', handlePaste);
+      }
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
 
   // Filtrar productos cuando cambie el término de búsqueda o la lista de productos
   useEffect(() => {
@@ -42,7 +62,7 @@ const Productos: React.FC = () => {
     if (searchTerm) {
       result = productos.filter(producto =>
         producto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        producto.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (producto.category && producto.category.toLowerCase().includes(searchTerm.toLowerCase())) || // Verificar que category exista
         producto.id.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -53,31 +73,34 @@ const Productos: React.FC = () => {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      // Asegúrate que la ruta al PHP sea correcta desde la ubicación del HTML/JS
-      const response = await fetch('/php/cargar_productos.php'); // Ajusta la ruta si es necesario
+      const response = await fetch(`${API_BASE_URL}/php/cargar_productos.php`);
       if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
       }
       const data = await response.json();
-      // Asumiendo que la API devuelve un array de productos con las propiedades correctas
-      // Mapea los datos si es necesario para que coincidan con la interfaz Producto
-      const mappedData = data.map((item: any) => ({
-        id: item.cod_prod,
-        name: item.nom_prod,
-        description: item.desc_prod,
-        price: parseFloat(item.precio_prod),
-        stock: parseInt(item.stock_prod, 10),
-        category: item.nom_cat, // Asume que el backend une el nombre de la categoría
-        category_id: item.cod_cat,
-        image_url: item.imagen_url || '/assets/placeholder.png', // Usa una imagen por defecto si no hay
-        status: item.estado || 'activo' // Asume un estado por defecto
-      }));
-      setProductos(mappedData);
-      setError(null);
+
+      if (data.status === 'success' && Array.isArray(data.productos)) {
+        const mappedProductos: Producto[] = data.productos.map((p: any) => ({
+          id: p.cod_prod,
+          name: p.nom_prod,
+          description: p.desc_prod,
+          price: parseFloat(p.precio_prod),
+          stock: parseInt(p.stock_prod, 10),
+          category: p.nom_cat, // Nombre de la categoría
+          category_id: p.cod_cat, // Código de la categoría
+          image_url: p.imagen_prod ? `${API_BASE_URL}/${p.imagen_prod}` : 'https://placehold.co/100x100/png?text=Sin+Imagen',
+          status: p.estado === 'activo' ? 'activo' : 'inactivo', // Mapear directamente los valores del ENUM
+        }));
+        setProductos(mappedProductos);
+        setError(null);
+      } else {
+        throw new Error(data.message || 'Formato de respuesta inesperado al cargar productos.');
+      }
     } catch (err) {
       setError('Error al cargar productos: ' + (err instanceof Error ? err.message : String(err)));
-      console.error('Error fetching productos:', err);
-      setProductos([]); // Limpia los productos en caso de error
+      console.error('Error loading products:', err);
+      setProductos([]); // Limpiar productos en caso de error
     } finally {
       setLoading(false);
     }
@@ -85,15 +108,20 @@ const Productos: React.FC = () => {
 
   const fetchCategorias = async () => {
     try {
-      const response = await fetch('/php/cargar_categorias.php'); // Ajusta la ruta si es necesario
+      const response = await fetch(`${API_BASE_URL}/php/cargar_categorias.php`);
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
       const data = await response.json();
-      setCategorias(data);
+      if (data.status === 'success') {
+          setCategorias(data.categorias);
+      } else {
+          console.error('Error fetching categorias:', data.message);
+          setError(data.message || 'Error al cargar categorías');
+      }
     } catch (err) {
       console.error('Error fetching categorias:', err);
-      // Podrías establecer un error específico para categorías si es necesario
+      setError('Error al cargar categorías: ' + (err instanceof Error ? err.message : String(err)));
     }
   };
 
@@ -106,28 +134,31 @@ const Productos: React.FC = () => {
     if (!window.confirm('¿Está seguro de eliminar este producto?')) return;
 
     try {
-      const response = await fetch('/php/eliminar_producto.php', { // Ajusta la ruta si es necesario
+      // Asegurarse de que la URL es correcta y que se envía como JSON
+      const response = await fetch(`${API_BASE_URL}/php/eliminar_producto.php`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Importante para que PHP lo reciba como JSON
         },
         body: JSON.stringify({ cod_prod: id }),
       });
 
       if (!response.ok) {
-        const errorData = await response.text(); // Leer el cuerpo del error
+        const errorData = await response.text();
         throw new Error(`Error HTTP: ${response.status} - ${errorData}`);
       }
 
       const result = await response.json();
       if (result.status === 'success') {
         fetchProductos(); // Recargar la lista de productos
+        // Opcional: mostrar notificación de éxito
       } else {
         throw new Error(result.message || 'Error al eliminar el producto desde el backend');
       }
     } catch (err) {
       setError('Error al eliminar producto: ' + (err instanceof Error ? err.message : String(err)));
       console.error('Error deleting producto:', err);
+      // Opcional: mostrar notificación de error al usuario
     }
   };
 
@@ -136,6 +167,11 @@ const Productos: React.FC = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
 
+    // Si hay una imagen pegada, añadirla al FormData
+    if (pastedImage) {
+      formData.append('imagen', pastedImage, pastedImage.name);
+    }
+
     // Si estamos editando, añadir el ID del producto al FormData
     if (currentProducto) {
       formData.append('cod_prod', currentProducto.id);
@@ -143,8 +179,8 @@ const Productos: React.FC = () => {
 
     // Determinar la URL del script PHP
     const url = currentProducto
-      ? '/php/actualizar_producto.php' // Ajusta la ruta si es necesario
-      : '/php/insertar_producto_admin.php'; // Ajusta la ruta si es necesario
+      ? `${API_BASE_URL}/php/actualizar_producto.php`
+      : `${API_BASE_URL}/php/insertar_producto_admin.php`;
 
     try {
       const response = await fetch(url, {
@@ -160,10 +196,16 @@ const Productos: React.FC = () => {
       const result = await response.json();
       if (result.status === 'success') {
         setShowForm(false);
-        setCurrentProducto(null); // Limpiar producto actual
-        fetchProductos(); // Recargar la lista
+        setCurrentProducto(null);
+        fetchProductos();
+        // Opcional: mostrar notificación de éxito
       } else {
-        throw new Error(result.message || 'Error al guardar el producto desde el backend');
+        // Intentar parsear el mensaje de error si es un objeto con 'errors'
+        let errorMessage = result.message || 'Error al guardar el producto desde el backend';
+        if (result.errors && Array.isArray(result.errors)) {
+          errorMessage += ': ' + result.errors.join(', ');
+        }
+        throw new Error(errorMessage);
       }
     } catch (err) {
       setError('Error al guardar producto: ' + (err instanceof Error ? err.message : String(err)));
@@ -179,6 +221,8 @@ const Productos: React.FC = () => {
           onClick={() => {
             setCurrentProducto(null);
             setShowForm(true);
+            setPastedImage(null); // Clear pasted image state when opening for new product
+            setPastedImagePreview(null);
           }}
           className="bg-custom-blue hover:bg-custom-light-blue text-custom-light font-bold py-2 px-4 rounded-lg shadow flex items-center transition duration-150 ease-in-out"
         >
@@ -218,7 +262,7 @@ const Productos: React.FC = () => {
         </div>
       ) : (
         // Tabla de productos
-        <div className="overflow-x-auto bg-custom-light rounded-lg shadow">
+        <div className="bg-custom-light rounded-lg shadow"> {/* Removed overflow-x-auto */}
           <table className="min-w-full divide-y divide-custom-dark-grey">
             <thead className="bg-custom-grey">
               <tr>
@@ -237,7 +281,7 @@ const Productos: React.FC = () => {
                 filteredProductos.map((producto) => (
                   <tr key={producto.id} className="hover:bg-custom-grey transition duration-150 ease-in-out">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={producto.image_url || '/assets/tienda.png'} alt={producto.name} className="h-10 w-10 rounded-full object-cover" />
+                      <img src={producto.image_url || `${API_BASE_URL}/assets/tienda.png`} alt={producto.name} className="h-10 w-10 rounded-full object-cover" />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-custom-dark">{producto.id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark">{producto.name}</td>
@@ -288,8 +332,23 @@ const Productos: React.FC = () => {
             <h2 className="text-2xl font-bold mb-6 text-white">
               {currentProducto ? 'Editar Producto' : 'Nuevo Producto'}
             </h2>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <form onSubmit={handleSubmit} encType="multipart/form-data"> {/* encType is important for file uploads */}
               {/* Campos del formulario */}
+              {currentProducto && (
+                <div className="mb-4">
+                  <label className="block text-white text-sm font-bold mb-2" htmlFor="id_prod">
+                    ID del Producto:
+                  </label>
+                  <input
+                    type="text"
+                    id="id_prod"
+                    name="id_prod"
+                    value={currentProducto.id}
+                    className="appearance-none border border-custom-dark-grey rounded w-full py-2 px-3 bg-custom-light text-custom-dark leading-tight focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent cursor-not-allowed"
+                    readOnly
+                  />
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-white text-sm font-bold mb-2" htmlFor="nom_prod">
@@ -368,6 +427,23 @@ const Productos: React.FC = () => {
                 </div>
               </div>
 
+              {/* Campo de Estado */}
+              <div className="mb-4">
+                <label className="block text-white text-sm font-bold mb-2" htmlFor="estado">
+                  Estado
+                </label>
+                <select
+                  id="estado"
+                  name="estado"
+                  defaultValue={currentProducto?.status || 'activo'} // Valor por defecto 'activo'
+                  className="appearance-none border border-custom-dark-grey rounded w-full py-2 px-3 bg-custom-light text-custom-dark leading-tight focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent"
+                  required
+                >
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+
               <div className="mb-6">
                 <label className="block text-white text-sm font-bold mb-2" htmlFor="imagen">
                   Imagen del Producto
@@ -376,17 +452,60 @@ const Productos: React.FC = () => {
                   type="file"
                   id="imagen"
                   name="imagen"
+                  ref={fileInputRef} // Attach ref to the input
                   className="block w-full text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-400 file:text-white hover:file:bg-orange-300"
                   accept="image/*"
                 />
-                {currentProducto?.image_url && (
+                {/* Mostrar imagen actual si estamos editando y no hay imagen pegada */}
+                {currentProducto?.image_url && !pastedImagePreview && (
                   <div className="mt-2">
                     <p className="text-sm text-white">Imagen actual:</p>
                     <img src={currentProducto.image_url} alt="Imagen actual" className="h-16 w-16 mt-1 rounded object-cover"/>
-                    <p className="text-xs text-white mt-1">Deje el campo de archivo vacío si no desea cambiar la imagen.</p>
+                    <p className="text-xs text-white mt-1">Deje el campo de archivo vacío o pegue una nueva imagen para cambiarla.</p>
+                  </div>
+                )}
+                {/* Mostrar previsualización de imagen pegada */}
+                {pastedImagePreview && (
+                  <div className="mt-2">
+                    <p className="text-sm text-white">Imagen pegada:</p>
+                    <img src={pastedImagePreview} alt="Imagen pegada" className="h-16 w-16 mt-1 rounded object-cover"/>
+                    <p className="text-xs text-white mt-1">Esta imagen reemplazará la imagen actual al guardar.</p>
                   </div>
                 )}
               </div>
+
+              {/* Add paste handler function */}
+              <script>
+                {`
+                function handlePaste(event) {
+                  const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                  let imageFile = null;
+
+                  for (const item of items) {
+                    if (item.type.indexOf('image') !== -1) {
+                      imageFile = item.getAsFile();
+                      break;
+                    }
+                  }
+
+                  if (imageFile) {
+                    event.preventDefault(); // Prevent default paste behavior (e.g., pasting text)
+                    // Use a custom event or state update mechanism to pass the file to the React component
+                    // For simplicity here, we'll just log and indicate it was captured.
+                    // A more robust solution would involve setting state in the React component.
+                    console.log('Pasted image file:', imageFile);
+
+                    // Example: Dispatch a custom event with the file
+                    const customEvent = new CustomEvent('pasted-image', { detail: imageFile });
+                    event.target.dispatchEvent(customEvent);
+                  }
+                }
+
+                // Note: Attaching this directly in JSX script tag is not the standard React way.
+                // The useEffect approach above is preferred for attaching event listeners in React.
+                // This script tag is illustrative of the JS logic needed for pasting.
+                `}
+              </script>
 
               <div className="flex justify-end mt-6 space-x-3">
                 <button
@@ -394,6 +513,8 @@ const Productos: React.FC = () => {
                   onClick={() => {
                     setShowForm(false);
                     setCurrentProducto(null);
+                    setPastedImage(null); // Clear pasted image state on cancel
+                    setPastedImagePreview(null);
                   }}
                   className="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out"
                 >

@@ -2,7 +2,7 @@
 // --- CORS Headers ---
 // Especifica el origen permitido. Cambia '*' por tu dominio específico en producción por seguridad.
 // Para desarrollo con Live Server en 5500:
-header("Access-Control-Allow-Origin: http://127.0.0.1:5500"); 
+header("Access-Control-Allow-Origin: http://localhost:3001"); // Permitir solicitudes desde el frontend de admin en puerto 3001 
 // O para cualquier origen (menos seguro, úsalo con precaución):
 // header("Access-Control-Allow-Origin: *"); 
 

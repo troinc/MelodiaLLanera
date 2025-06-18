@@ -34,7 +34,7 @@ class Carrito {
 
     // Obtener ítems del carrito con estado 'EN_CARRITO' y el nombre del producto
     public function getItems($cod_cli) {
-        $sql = "SELECT c.num_ped, c.cod_prod, c.cantidad, c.precio_unitario, p.nom_prod
+        $sql = "SELECT c.num_ped, c.cod_prod, c.cantidad, c.precio_unitario, p.nom_prod, p.imagen_prod
                 FROM compras c
                 JOIN productos p ON c.cod_prod = p.cod_prod
                 WHERE c.cod_cli = ? AND c.estado_ped = 'EN_CARRITO'";

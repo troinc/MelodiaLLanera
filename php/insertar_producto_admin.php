@@ -7,6 +7,18 @@
 //     exit;
 // }
 
+// --- CORS Headers ---
+// Ajusta el origen si tu admin panel corre en un puerto diferente o dominio
+header("Access-Control-Allow-Origin: *"); // Permite cualquier origen (ajusta en producción)
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Permitir POST y OPTIONS
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+// --- Fin CORS ---
+
 header("Content-Type: application/json; charset=UTF-8");
 error_reporting(0); // Desactivar reportes directos en producción
 ini_set('log_errors', 1); // Asegurar registro de errores
@@ -38,26 +50,7 @@ $desc_prod = $_POST['desc_prod'] ?? ''; // Descripción puede ser opcional
 $precio_prod = $_POST['precio_prod'] ?? null;
 $stock_prod = $_POST['stock_prod'] ?? null;
 $cod_cat = $_POST['cod_cat'] ?? null; // Categoría puede ser opcional
-
-$errors = [];
-if (empty($nom_prod)) $errors[] = "El nombre del producto es obligatorio.";
-if ($precio_prod === null || !is_numeric($precio_prod) || $precio_prod < 0) $errors[] = "El precio debe ser un número válido y no negativo.";
-if ($stock_prod === null || !ctype_digit($stock_prod) || $stock_prod < 0) $errors[] = "El stock debe ser un número entero no negativo.";
-// Podrías añadir validación para cod_cat si es obligatorio o si debe existir en la tabla categorias
-
-// --- Validar Método HTTP ---
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['status' => 'error', 'message' => 'Método no permitido. Se esperaba POST.']);
-    exit;
-}
-
-// --- Recibir y Validar Datos del Formulario ---
-$nom_prod = $_POST['nom_prod'] ?? null;
-$desc_prod = $_POST['desc_prod'] ?? ''; // Descripción puede ser opcional
-$precio_prod = $_POST['precio_prod'] ?? null;
-$stock_prod = $_POST['stock_prod'] ?? null;
-$cod_cat = $_POST['cod_cat'] ?? null; // Categoría puede ser opcional
+$estado = $_POST['estado'] ?? 'activo'; // Asignar estado por defecto 'activo' al insertar
 
 $errors = [];
 if (empty($nom_prod)) $errors[] = "El nombre del producto es obligatorio.";
@@ -135,8 +128,8 @@ if ($imagen_subida) {
 $cod_prod = uniqid('prod_');
 
 // --- Preparar y Ejecutar Inserción en BD ---
-// !! IMPORTANTE: Asegúrate de que la columna 'imagen_prod' exista en tu tabla 'productos' !!
-$sql = "INSERT INTO productos (cod_prod, nom_prod, desc_prod, precio_prod, stock_prod, cod_cat, imagen_prod) VALUES (?, ?, ?, ?, ?, ?, ?)";
+// !! IMPORTANTE: Asegúrate de que la columna 'imagen_prod' y 'estado' existan en tu tabla 'productos' !!
+$sql = "INSERT INTO productos (cod_prod, nom_prod, desc_prod, precio_prod, stock_prod, cod_cat, imagen_prod, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // Añadir estado
 $stmt = $conexion->prepare($sql);
 
 if (!$stmt) {
@@ -150,15 +143,16 @@ if (!$stmt) {
     exit;
 }
 
-// Ajustar tipos: s (cod_prod), s (nom_prod), s (desc_prod), d (precio), i (stock), s (cod_cat), s (imagen_path_db)
-$stmt->bind_param("sssdisss",
+// Ajustar tipos: s (cod_prod), s (nom_prod), s (desc_prod), d (precio), i (stock), s (cod_cat), s (imagen_path_db), s (estado)
+$stmt->bind_param("sssdisss", // Añadir un 's' para estado
     $cod_prod,
     $nom_prod,
     $desc_prod,
     $precio_prod,
     $stock_prod,
     $cod_cat,
-    $imagen_path_db // Será NULL si no se subió imagen y la columna lo permite
+    $imagen_path_db, // Será NULL si no se subió imagen y la columna lo permite
+    $estado // Añadir estado
 );
 
 if ($stmt->execute()) {
@@ -174,7 +168,8 @@ if ($stmt->execute()) {
                  'precio_prod' => $precio_prod,
                  'stock_prod' => $stock_prod,
                  'cod_cat' => $cod_cat,
-                 'imagen_prod' => $imagen_path_db // Ruta relativa guardada
+                 'imagen_prod' => $imagen_path_db, // Ruta relativa guardada
+                 'estado' => $estado // Devolver el estado
             ]
         ]);
     } else {

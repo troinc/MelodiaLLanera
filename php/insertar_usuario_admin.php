@@ -16,14 +16,14 @@ $response = ['status' => 'error', 'message' => 'Error al insertar usuario.'];
 $data = json_decode(file_get_contents('php://input'), true);
 
 if ($data) {
-    $nombre = $data['nombre_usuario'] ?? '';
+    // $nombre = $data['nombre_usuario'] ?? ''; // Removed nombre
     $correo = $data['correo_electronico'] ?? '';
     $contrasena = $data['contrasena'] ?? '';
-    $rol = $data['rol'] ?? 'cliente';
+    $rol = $data['rol'] ?? 'cliente'; // Default to 'cliente' if not provided
     
-    // Validar datos
-    if (empty($nombre) || empty($correo) || empty($contrasena)) {
-        $response['message'] = 'Todos los campos son obligatorios';
+    // Validar datos (removed nombre check)
+    if (empty($correo) || empty($contrasena)) {
+        $response['message'] = 'Correo electrónico y contraseña son obligatorios';
         echo json_encode($response);
         exit;
     }
@@ -31,17 +31,16 @@ if ($data) {
     // Hashear contraseña
     $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
     
-    // Insertar en la base de datos
-    $query = "INSERT INTO clientes (nom_cli, ape_cli, email_cli, contrasena_cli, rol, estado) VALUES (?, ?, ?, ?, ?, 'activo')";
+    // Insertar en la base de datos (removed nom_cli, ape_cli)
+    // Assuming nom_cli and ape_cli can be NULL or have default values in the DB
+    $query = "INSERT INTO clientes (email_cli, contrasena_cli, rol, estado) VALUES (?, ?, ?, 'activo')";
     $stmt = $conexion->prepare($query);
     
-    // Separar nombre y apellido (asumiendo formato "Nombre Apellido")
-    $partes = explode(' ', $nombre, 2);
-    $nom_cli = $partes[0] ?? '';
-    $ape_cli = $partes[1] ?? '';
+    // Removed nombre/apellido separation
     
     if ($stmt) {
-        $stmt->bind_param("sssss", $nom_cli, $ape_cli, $correo, $contrasena_hash, $rol);
+        // Adjusted bind_param types and variables
+        $stmt->bind_param("sss", $correo, $contrasena_hash, $rol);
         
         if ($stmt->execute()) {
             $response = ['status' => 'success', 'message' => 'Usuario creado correctamente'];

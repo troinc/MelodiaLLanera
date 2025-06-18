@@ -22,7 +22,7 @@ if (empty($email_cli) || empty($password)) {
 }
 
 // Preparar la consulta para obtener el usuario por correo
-$sql = "SELECT * FROM clientes WHERE email_cli = ?";
+$sql = "SELECT cod_cli, password, rol FROM clientes WHERE email_cli = ?"; // Añadir 'rol' a la consulta
 $stmt = $conexion->prepare($sql);
 if (!$stmt) {
     echo "<script>
@@ -41,6 +41,7 @@ if ($result->num_rows === 1) {
     if (password_verify($password, $user['password'])) {
         // Guardar el id del cliente en sesión
         $_SESSION['cod_cli'] = $user['cod_cli'];
+        $_SESSION['user_role'] = $user['rol']; // Guardar el rol en la sesión
         echo "<script>
                 alert('Inicio de sesión exitoso.');
                 window.location.href = 'http://localhost/InstrumentosLLaneros/home/home.htm';

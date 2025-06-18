@@ -38,9 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // --- Obtener y Validar Datos de Entrada ---
-$cod_cat = isset($_POST['cod_cat_edit']) ? filter_var($_POST['cod_cat_edit'], FILTER_VALIDATE_INT) : null;
-$nom_cat = isset($_POST['nom_cat']) ? trim($_POST['nom_cat']) : null;
-$desc_cat = isset($_POST['desc_cat']) ? trim($_POST['desc_cat']) : ''; // Descripción es opcional
+$input = json_decode(file_get_contents('php://input'), true);
+
+$cod_cat = isset($input['cod_cat']) ? filter_var($input['cod_cat'], FILTER_VALIDATE_INT) : null;
+$nom_cat = isset($input['nom_cat']) ? trim($input['nom_cat']) : null;
+$desc_cat = isset($input['desc_cat']) ? trim($input['desc_cat']) : ''; // Descripción es opcional
 
 if ($cod_cat === false || $cod_cat === null) {
     http_response_code(400); // Bad Request

@@ -9,70 +9,27 @@
 	<title>Condiciones de Uso - Melodía Llanera</title>
 </head>
 <body>
-	<!-- SIDEBAR (Igual que en home.htm) -->
-	<section id="sidebar">
-		<a href="../home.htm" class="brand"> <!-- Enlace corregido para volver a home -->
-			<i class='bx bx-music bx-lg'></i>
-			<span class="text">Melodía Llanera</span>
-		</a>
-		<ul class="side-menu top">
-			<li><a href="#" data-target="productos"><i class='bx bxs-dashboard bx-sm'></i><span class="text">Productos</span></a></li>
-			<li><a href="#" data-target="categorias"><i class='bx bxs-guitar-amp bx-sm'></i><span class="text">Categorias</span></a></li>
-			<li><a href="#" data-target="compras"><i class='bx bxs-cart bx-sm'></i><span class="text">Compras</span></a></li>
-			<li><a href="#" data-target="reseñas"><i class='bx bxs-user-account bx-sm'></i><span class="text">Reseñas</span></a></li>
-			<li><a href="#" data-target="perfil"><i class='bx bxs-user bx-sm'></i><span class="text">Perfil</span></a></li>
-		</ul>
-		<ul class="side-menu bottom">
-			<!-- Settings (simplificado o igual) -->
-		</ul>
-	</section>
-	<!-- SIDEBAR -->
+
 
 	<!-- CONTENT -->
 	<section id="content">
-		<!-- NAVBAR (Igual que en home.htm, pero sin funcionalidad de búsqueda aquí) -->
-		<nav>
-			<div class="nav-left">
-				<i class='bx bx-menu bx-sm'></i>
-			</div>
-			<div class="nav-center">
-				<!-- Sin formulario de búsqueda en esta página -->
-			</div>
-			<div class="nav-right">
-				<a href="#" class="profile" id="profileIcon">
-					<img src="https://placehold.co/600x400/png" alt="Profile">
-				</a>
-				<div class="profile-menu" id="profileMenu">
-					<ul>
-						<li><a href="#" data-target="perfil"><i class='bx bxs-user'></i> Mi Perfil</a></li>
-						<li><a href="#"><i class='bx bxs-cog'></i> Configuración</a></li>
-						<li><a href="#" id="logoutButton"><i class='bx bxs-log-out'></i> Cerrar Sesión</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-		<!-- NAVBAR -->
 
 		<!-- MAIN -->
 		<main>
             <div class="head-title">
                 <div class="left">
                     <h1>Condiciones de Uso</h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#" data-target="perfil">Perfil</a></li>
-                        <li><i class='bx bx-chevron-right'></i></li>
-                        <li><a class="active" href="#">Condiciones de Uso</a></li>
-                    </ul>
                 </div>
             </div>
 
-             <div class="document-content" style="padding: 20px; background: var(--light); border-radius: 10px; margin-top: 20px; color: var(--dark);">
+             <div class="document-content">
                  <style>
-                    .document-content h2 { margin-bottom: 1rem; margin-top: 1.5rem; }
-                    .document-content p { margin-bottom: 0.8rem; line-height: 1.6; }
-                    .document-content ul { margin-left: 20px; margin-bottom: 0.8rem; }
-                    .document-content li { margin-bottom: 0.4rem; }
-                    .document-content strong { margin-top: 1.5rem; display: inline-block; }
+                    .head-title .left h1 { color: #ff9966; }
+                    .document-content h2 { margin-bottom: 1rem; margin-top: 1.5rem; color: #FFFFFF; }
+                    .document-content p { margin-bottom: 0.8rem; line-height: 1.6; color: #FFFFFF; }
+                    .document-content ul { margin-left: 20px; margin-bottom: 0.8rem; color: #FFFFFF; }
+                    .document-content li { margin-bottom: 0.4rem; color: #FFFFFF; }
+                    .document-content strong { margin-top: 1.5rem; display: inline-block; color: #FFFFFF; }
                 </style>
                 <h2>1. Introducción</h2>
                 <p>Estas Condiciones de Uso rigen el acceso y la utilización del sitio web Melodía Llanera ("el Sitio"). Al utilizar el Sitio, usted acepta estas condiciones en su totalidad. Si no está de acuerdo con estas condiciones o cualquier parte de ellas, no debe utilizar nuestro Sitio.</p>
@@ -115,59 +72,5 @@
 
 	<!-- Ajustar ruta JS -->
 	<script src="../script.js"></script>
-    <!-- No necesitamos resenas.js aquí -->
-     <script>
-        // Script básico para funcionalidad mínima (menú lateral, perfil, logout)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Funcionalidad básica del menú lateral y perfil (copiada/adaptada de script.js si es necesario)
-            const menuBar = document.querySelector('#content nav .bx.bx-menu');
-            const sidebar = document.getElementById('sidebar');
-            if (menuBar && sidebar) {
-                menuBar.addEventListener('click', function () {
-                    sidebar.classList.toggle('hide');
-                });
-            }
-
-            const profileIcon = document.getElementById('profileIcon');
-            const profileMenu = document.getElementById('profileMenu');
-             if (profileIcon && profileMenu) {
-                profileIcon.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    profileMenu.classList.toggle('show');
-                });
-                 document.addEventListener('click', (e) => {
-                    if (!profileIcon.contains(e.target) && !profileMenu.contains(e.target)) {
-                        profileMenu.classList.remove('show');
-                    }
-                 });
-            }
-
-            // Redireccionar enlaces del menú lateral y perfil a home.htm con parámetro
-            document.querySelectorAll('#sidebar a[data-target], #profileMenu a[data-target]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = this.dataset.target;
-                    if (target) {
-                        window.location.href = `../home.htm#${target}`; // Ir a home y el script.js manejará la sección
-                    }
-                });
-            });
-
-            // Funcionalidad Logout (simplificada, asume que script.js maneja el modal si existe)
-             const logoutButton = document.getElementById('logoutButton');
-             if(logoutButton) {
-                 logoutButton.addEventListener('click', function(e) {
-                     e.preventDefault();
-                     // Intentar usar el modal si existe en home.htm, si no, confirmar simple
-                     if (window.parent && window.parent.document.getElementById('logoutModal')) {
-                         window.parent.document.getElementById('logoutModal').style.display = 'block';
-                     } else if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
-                         // Lógica de logout (puede requerir llamar a una función global o redirigir)
-                         window.location.href = '../index.php'; // Redirigir a la página de login
-                     }
-                 });
-             }
-        });
-    </script>
 </body>
 </html>

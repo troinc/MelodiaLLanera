@@ -30,7 +30,7 @@ const Reportes: React.FC = () => {
     try {
       setLoadingVentas(true);
       // Asume un endpoint que devuelve reportes de ventas consolidados
-      const response = await fetch('/php/cargar_reporte_ventas.php'); // Ajusta la ruta
+      const response = await fetch('http://localhost/InstrumentosLLaneros/php/cargar_ventas.php'); // Corregido: usa cargar_ventas.php
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
       const data = await response.json();
       // Mapea los datos si es necesario
@@ -49,7 +49,7 @@ const Reportes: React.FC = () => {
     try {
       setLoadingUsuarios(true);
       // Asume un endpoint que devuelve reportes de usuarios
-      const response = await fetch('/php/cargar_reporte_usuarios.php'); // Ajusta la ruta
+      const response = await fetch('http://localhost/InstrumentosLLaneros/php/cargar_usuarios.php'); // Corregido: usa cargar_usuarios.php
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
       const data = await response.json();
       // Mapea los datos si es necesario

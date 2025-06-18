@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php session_start(); ?>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -86,7 +87,22 @@
 				</div>
 			</li>
 		</ul>
-	</section>
+		<!-- Admin Link moved outside the bottom menu list for absolute positioning -->
+		<ul class="side-menu admin-menu-container">
+			<li class="admin-link-item" style="display: none;"> <!-- Oculto por defecto -->
+				<a href="../admin-mode/" target="_blank" class="admin-link" id="adminLink">
+					<i class='bx bxs-shield-quarter bx-sm'></i>
+					<span class="text">Admin Panel</span>
+				</a>
+			</li>
+		</ul>
+	<?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+<a href="http://localhost:3001/" class="admin-panel-btn">
+    <i class='bx bx-shield-quarter'></i>
+    <span class="text">Panel Admin</span>
+</a>
+<?php endif; ?>
+</section>
 	<!-- SIDEBAR -->
 
 
@@ -116,7 +132,7 @@
 		<div class="profile-menu" id="profileMenu">
 			<ul>
 				<li><a href="#"><i class='bx bxs-user'></i> Mi Perfil</a></li>
-				<li><a href="#"><i class='bx bxs-cog'></i> Configuración</a></li>
+				<li><a href="#" id="headerSettingsButton"><i class='bx bxs-cog'></i> Configuración</a></li>
 				<!-- Agregar id "logoutButton" para el enlace de cerrar sesión -->
 				<li><a href="#" id="logoutButton"><i class='bx bxs-log-out'></i> Cerrar Sesión</a></li>
 			</ul>
@@ -143,131 +159,75 @@
                 </div>
             </div>
 
-            <div class="product-grid">
-                <!-- Producto 1 -->
-                <div class="product-card" data-id="1">
-                    <img src="https://placehold.co/300x300/png" alt="Arpa Llanera">
-                    <h3>Arpa Llanera Profesional</h3>
-                    <p class="price">$2,500,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
+            <div class="product-grid" id="product-grid-main">
+                <?php 
+                // Incluir el script para cargar productos
+                // Este script debería estar en una ubicación accesible y devolver JSON
+                // Por simplicidad, asumiremos que tenemos una función o incluimos un archivo que nos da los productos
+                // En un caso real, harías una solicitud a `cargar_productos.php` o similar
+                // y luego iterarías sobre los resultados.
 
-                <!-- Producto 2 (actualizado) -->
-                <div class="product-card" data-id="2">
-                    <img src="https://placehold.co/300x300/png" alt="Cuatro Llanero">
-                    <h3>Cuatro Llanero</h3>
-                    <p class="price">$800,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
+                // Simulación de carga de productos (reemplazar con lógica real de BD)
+                // include __DIR__ . '/../php/cargar_productos_para_home.php'; 
+                // $productos = cargarProductosParaHome(); // Suponiendo que esta función existe y devuelve un array
 
-                <!-- Producto 3 -->
-                <div class="product-card" data-id="3">
-                    <img src="https://placehold.co/300x300/png" alt="Maracas">
-                    <h3>Maracas Artesanales</h3>
-                    <p class="price">$150,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 4 -->
-                <div class="product-card" data-id="4">
-                    <img src="https://placehold.co/300x300/png" alt="Bandola">
-                    <h3>Bandola Llanera</h3>
-                    <p class="price">$1,200,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 5 -->
-                <div class="product-card" data-id="5">
-                    <img src="https://placehold.co/300x300/png" alt="Capachos">
-                    <h3>Capachos Tradicionales</h3>
-                    <p class="price">$180,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 6 -->
-                <div class="product-card" data-id="6">
-                    <img src="https://placehold.co/300x300/png" alt="Furruco">
-                    <h3>Furruco Artesanal</h3>
-                    <p class="price">$450,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 7 -->
-                <div class="product-card" data-id="7">
-                    <img src="https://placehold.co/300x300/png" alt="Tambora">
-                    <h3>Tambora Llanera</h3>
-                    <p class="price">$350,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 8 -->
-                <div class="product-card" data-id="8">
-                    <img src="https://placehold.co/300x300/png" alt="Charrasca">
-                    <h3>Charrasca de Metal</h3>
-                    <p class="price">$120,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 9 -->
-                <div class="product-card" data-id="9">
-                    <img src="https://placehold.co/300x300/png" alt="Guitarra Criolla">
-                    <h3>Guitarra Criolla</h3>
-                    <p class="price">$900,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 10 -->
-                <div class="product-card" data-id="10">
-                    <img src="https://placehold.co/300x300/png" alt="Bajo Quinto">
-                    <h3>Bajo Quinto Tradicional</h3>
-                    <p class="price">$1,800,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 11 -->
-                <div class="product-card" data-id="11">
-                    <img src="https://placehold.co/300x300/png" alt="Requinto">
-                    <h3>Requinto Llanero</h3>
-                    <p class="price">$750,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 12 -->
-                <div class="product-card" data-id="12">
-                    <img src="https://placehold.co/300x300/png" alt="Cajón Peruano">
-                    <h3>Cajón Peruano</h3>
-                    <p class="price">$280,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 13 -->
-                <div class="product-card" data-id="13">
-                    <img src="https://placehold.co/300x300/png" alt="Güiro">
-                    <h3>Güiro Profesional</h3>
-                    <p class="price">$95,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 14 -->
-                <div class="product-card" data-id="14">
-                    <img src="https://placehold.co/300x300/png" alt="Tiple">
-                    <h3>Tiple Colombiano</h3>
-                    <p class="price">$650,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
-
-                <!-- Producto 15 -->
-                <div class="product-card" data-id="15">
-                    <img src="https://placehold.co/300x300/png" alt="Mandolina">
-                    <h3>Mandolina Artesanal</h3>
-                    <p class="price">$950,000</p>
-                    <button class="add-to-cart">Añadir al Carrito</button>
-                </div>
+                // Dado que cargar_productos.php ya existe y devuelve JSON, 
+                // sería mejor que script.js maneje la carga vía AJAX para la sección principal también,
+                // o pasar los datos de PHP a JS. 
+                // Por ahora, dejaremos un placeholder y lo llenaremos con JS.
+                ?>
+                <!-- Los productos se cargarán aquí dinámicamente por JavaScript -->
             </div>
             <!-- Sección de reseñas y carrito eliminada del contenido inicial -->
         </main>
+
+        <!-- Modal de Configuración -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeSettingsModal">&times;</span>
+                <h2>Configuración del Sitio Web</h2>
+                <ul class="settings-list">
+                    <li>
+                        <button id="toggleTheme" class="settings-button">
+                            <i class='bx bxs-palette'></i>
+                            <span>Tono del Sitio Web</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="paymentMethods" class="settings-button">
+                            <i class='bx bxs-credit-card'></i>
+                            <span>Métodos de Pago</span>
+                        </button>
+                    </li>
+                    <li>
+                        <a href="./documentos/terminos.html" class="settings-button">
+                            <i class='bx bxs-file'></i>
+                            <span>Términos y Condiciones</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./documentos/privacidad.html" class="settings-button">
+                            <i class='bx bxs-lock-alt'></i>
+                            <span>Política de Privacidad</span>
+                        </a>
+                    </li>
+                    <li>
+                        <button id="deleteAccount" class="settings-button delete-button">
+                            <i class='bx bxs-trash'></i>
+                            <span>Eliminar Cuenta</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
 		<!-- MAIN -->
-	</section>
+	<?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+<a href="http://localhost:3001/" class="admin-panel-btn">
+    <i class='bx bx-shield-quarter'></i>
+    <span class="text">Panel Admin</span>
+</a>
+<?php endif; ?>
+</section>
 	<!-- CONTENT -->
 	
 

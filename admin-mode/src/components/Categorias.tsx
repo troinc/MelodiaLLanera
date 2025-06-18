@@ -8,6 +8,9 @@ interface Categoria {
   desc_cat?: string; // Descripción opcional
 }
 
+// Define API base URL
+const API_BASE_URL = 'http://localhost';
+
 const Categorias: React.FC = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,14 +26,20 @@ const Categorias: React.FC = () => {
   const fetchCategorias = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/php/cargar_categorias.php'); // Ajusta la ruta si es necesario
+      const response = await fetch(`${API_BASE_URL}/InstrumentosLLaneros/php/cargar_categorias.php`); // Corregido: ruta completa del proyecto
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
       const data = await response.json();
-      // Asumiendo que la API devuelve un array de categorías con cod_cat y nom_cat
-      setCategorias(data);
-      setError(null);
+      // Asumiendo que la API devuelve un objeto con 'status' y 'categorias'
+       if (data.status === 'success') {
+          setCategorias(data.categorias);
+          setError(null);
+      } else {
+          setError('Error al cargar categorías: ' + (data.message || 'Error desconocido'));
+          console.error('Error fetching categorias:', data.message);
+          setCategorias([]); // Limpia las categorías en caso de error
+      }
     } catch (err) {
       setError('Error al cargar categorías: ' + (err instanceof Error ? err.message : String(err)));
       console.error('Error fetching categorias:', err);
@@ -49,7 +58,7 @@ const Categorias: React.FC = () => {
     if (!window.confirm('¿Está seguro de eliminar esta categoría? Esto podría afectar a los productos asociados.')) return;
 
     try {
-      const response = await fetch('/php/eliminar_categoria.php', { // Ajusta la ruta si es necesario
+      const response = await fetch(`${API_BASE_URL}/InstrumentosLLaneros/php/eliminar_categoria.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,11 +91,11 @@ const Categorias: React.FC = () => {
     formData.forEach((value, key) => { data[key] = value; });
 
     // Determinar la URL y el cuerpo de la solicitud
-    let url = '/php/insertar_categoria.php'; // Ajusta la ruta si es necesario
+    let url = `${API_BASE_URL}/InstrumentosLLaneros/php/insertar_categoria.php`;
     let body: any = data;
 
     if (currentCategoria) {
-      url = '/php/actualizar_categoria.php'; // Ajusta la ruta si es necesario
+      url = `${API_BASE_URL}/InstrumentosLLaneros/php/actualizar_categoria.php`;
       body.cod_cat = currentCategoria.cod_cat; // Añadir el ID para actualizar
     }
 
@@ -207,6 +216,7 @@ const Categorias: React.FC = () => {
                 setCurrentCategoria(null);
               }}
               className="absolute top-0 right-0 mt-4 mr-4 text-custom-dark-grey hover:text-custom-dark"
+              aria-label={currentCategoria ? 'Cerrar formulario de edición de categoría' : 'Cerrar formulario de nueva categoría'}
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" className="fill-red-500" />
@@ -215,6 +225,19 @@ const Categorias: React.FC = () => {
 
             <h2 className="text-2xl font-semibold text-custom-dark mb-4">{currentCategoria ? 'Editar Categoría' : 'Nueva Categoría'}</h2>
             <form onSubmit={handleSubmit}>
+              {currentCategoria && (
+                <div className="mb-4">
+                  <label htmlFor="cod_cat" className="block text-custom-dark-grey text-sm font-bold mb-2">ID de Categoría:</label>
+                  <input
+                    type="text"
+                    id="cod_cat"
+                    name="cod_cat"
+                    value={currentCategoria.cod_cat}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 bg-custom-light text-custom-dark leading-tight focus:outline-none focus:shadow-outline cursor-not-allowed"
+                    readOnly
+                  />
+                </div>
+              )}
               <div className="mb-4">
                 <label htmlFor="nom_cat" className="block text-custom-dark-grey text-sm font-bold mb-2">Nombre:</label>
                 <input

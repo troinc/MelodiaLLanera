@@ -50,6 +50,19 @@ body {
 
 
 
+/* Estilos para el enlace de Admin */
+#sidebar .side-menu li.admin-link-item a {
+    color: var(--yellow); /* O un color distintivo */
+}
+
+#sidebar .side-menu li.admin-link-item a:hover {
+    color: var(--light-yellow);
+}
+
+#sidebar .side-menu li.admin-link-item.active a {
+    color: var(--orange);
+}
+
 /* SIDEBAR */
 #sidebar {
     position: fixed;
@@ -184,6 +197,38 @@ body {
     color: var(--blue);
 }
 
+/* Styles for Admin Link positioning */
+#sidebar .admin-menu-container {
+    position: absolute;
+    bottom: 20px; /* Adjust as needed */
+    left: 0;
+    width: 100%;
+    padding: 0 6px; /* Match sidebar padding */
+}
+
+#sidebar .admin-menu-container .admin-link-item {
+    margin-left: 0; /* Override default margin */
+    border-radius: 48px; /* Match other items if needed */
+    padding: 0; /* Override default padding */
+    width: 100%;
+}
+
+#sidebar .admin-menu-container .admin-link-item a {
+    /* Styles for the link itself, if needed */
+    /* Ensure it fills the container li */
+    border-radius: 48px;
+}
+
+/* Ensure it doesn't get the active state background */
+#sidebar .admin-menu-container .admin-link-item.active {
+    background: transparent;
+}
+#sidebar .admin-menu-container .admin-link-item.active::before,
+#sidebar .admin-menu-container .admin-link-item.active::after {
+    content: none;
+}
+
+
 #sidebar .side-menu li a .bx {
     min-width: calc(60px - ((4px + 6px) * 2));
     display: flex;
@@ -205,6 +250,19 @@ body {
 #sidebar .side-menu.bottom li:nth-last-of-type(2) {
     bottom: 40px;
     /* İkinci son öğeyi yukarı kaydır */
+}
+
+/* Estilos para el enlace de Admin */
+#sidebar .side-menu li.admin-link-item a {
+    color: var(--yellow); /* O un color distintivo */
+}
+
+#sidebar .side-menu li.admin-link-item a:hover {
+    color: var(--light-yellow);
+}
+
+#sidebar .side-menu li.admin-link-item.active a {
+    color: var(--orange);
 }
 
 /* SIDEBAR */
@@ -565,56 +623,83 @@ body.dark #content nav .profile-menu li a {
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Volver al ancho mínimo original */
     gap: 2rem;
     padding: 2rem 0;
 }
 
 .product-card {
-    background: var(--light);
-    border-radius: 15px;
-    padding: 1rem;
+    background: var(--light); /* Fondo original */
+    border-radius: 15px; /* Borde redondeado original */
+    padding: 1rem; /* Relleno original */
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* Transición original */
+    /* Eliminar sombra y borde añadidos en intentos anteriores */
+    box-shadow: none;
+    border: none;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Efecto hover original */
 }
 
 .product-card img {
     width: 100%;
-    height: 200px;
+    height: 200px; /* Altura original */
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1rem;
+    border-radius: 10px; /* Borde redondeado original */
+    margin-bottom: 1rem; /* Margen inferior original */
+    /* Asegurar que la imagen no se desborde si el contenedor tiene padding */
+    max-width: 100%;
+    height: auto; /* Ajustar altura automáticamente para mantener proporción */
+    /* Eliminar aspect-ratio y borde añadidos en intentos anteriores */
+    aspect-ratio: auto;
+    border: none;
 }
 
 .product-card h3 {
-    color: var(--dark);
+    color: var(--dark); /* Color blanco para el texto */
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
     text-align: center;
+    font-weight: 600;
 }
 
 .product-card .price {
-    color: var(--blue);
+    color: var(--blue); /* Color naranja/azul */
     font-size: 1.3rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem; /* Margen inferior original */
+}
+
+.product-card .stock {
+    color: var(--dark); /* Color blanco para el texto de stock */
+    font-size: 1rem;
+    margin-bottom: 1rem; /* Añadir margen inferior para separar del botón */
+}
+
+.product-card .stock span {
+     font-weight: bold; /* Hacer el número de stock negrita */
 }
 
 .product-card .add-to-cart {
-    background: var(--blue);
-    color: var(--light);
+    background: var(--blue); /* Color naranja/azul original */
+    color: var(--light); /* Color blanco original */
     border: none;
     padding: 0.8rem 1.5rem;
     border-radius: 25px;
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.3s ease;
+    /* Eliminar ancho completo y margin-top auto añadidos en intentos anteriores */
+    width: auto;
+    margin-top: 0;
+}
+
+.product-card .add-to-cart:hover {
+    background: var(--light-blue); /* Efecto hover original */
 }
 
 .product-card .add-to-cart:hover {
@@ -1023,34 +1108,165 @@ body.dark #content nav .profile-menu li a {
     margin-top: 1rem;
 }
 
-/* Modal Styles */
+/* Estilos para el modal general */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    background: #3a3a3a;
-    margin: 20% auto;
-    padding: 20px;
-    border: 1px solid #555;
-    width: 300px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    text-align: center;
+          background: #3a3a3a; /* Fondo gris oscuro */
+          margin: 50px auto; /* Centra el modal horizontalmente y lo sube un poco */
+          padding: 20px;
+          border: 1px solid #555;
+          width: 95%; /* Make it even wider */
+          max-width: 1400px; /* Even further increase maximum width */
+          min-width: 600px; /* Increase minimum width to encourage horizontal layout */
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          text-align: center;
+          color: #fff; /* Texto blanco */
+      }
+
+.modal-content h2 {
+    margin-top: 0;
+    color: var(--dark);
+    margin-bottom: 20px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos específicos para el modal de configuración */
+.settings-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex; /* Arrange items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: center; /* Center items horizontally */
+    gap: 10px; /* Reduce space between items */
+}
+
+.settings-list li {
+    margin-bottom: 0; /* Remove bottom margin */
+
+}
+
+.settings-button {
+    display: flex;
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    width: 150px; /* Set a fixed width for the buttons */
+    height: 70px; /* Keep height consistent */
+    padding: 8px 10px;
+    background: #555; /* Darker background for buttons */
     color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px; /* Even smaller font size */
+    transition: background 0.3s ease;
+    text-align: center; /* Center text */
+}
+
+.settings-button i {
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 5px; /* Add bottom margin for spacing */
+    font-size: 24px; /* Larger icon size */
+}
+
+.settings-button:hover {
+    background: #666; /* Slightly lighter on hover */
+}
+
+.settings-button.delete-button {
+    background: #ff4444;
+}
+
+.settings-button.delete-button:hover {
+    background: #cc0000;
+}
+
+/* Estilos para el modal de confirmación de logout (mantener los existentes) */
+#logoutModal .modal-content {
+    max-width: 500px;
 }
 
 .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    background-color: var(--blue);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-buttons button:hover {
+    background-color: var(--dark-blue);
+}
+
+#cancelLogout {
+    background-color: var(--grey);
+}
+
+#cancelLogout:hover {
+    background-color: var(--dark-grey);
+}
+
+/* Estilos para el modo oscuro (ejemplo) */
+body.dark-theme {
+    background-color: #333;
+    color: #eee;
+}
+
+body.dark-theme .modal-content {
+    background-color: #444;
+    color: #eee;
+}
+
+body.dark-theme .modal-content h2,
+body.dark-theme .setting-item h3 {
+    color: var(--white);
+}
+
+body.dark-theme .setting-item {
+    background-color: #555;
+}
+
+body.dark-theme .setting-item p {
+    color: #ccc;
 }
 
 /* Instrument Details Styles */

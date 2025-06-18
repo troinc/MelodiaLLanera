@@ -133,28 +133,34 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
+            background-color: var(--primary-color); /* Usar color primario */
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 24px;
+            width: 50px; /* Aumentar tamaño */
+            height: 50px; /* Aumentar tamaño */
+            font-size: 28px; /* Aumentar tamaño icono */
             cursor: pointer;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         .slider-btn:hover:not(:disabled) {
-            background-color: var(--grey); /* Cambiar a gris del sitio */
-            border: 1px solid var(--dark-grey); /* Añadir borde sutil */
+            background-color: var(--accent-color); /* Usar color de acento al pasar el mouse */
+            transform: translateY(-50%) scale(1.05); /* Efecto sutil al pasar el mouse */
         }
-        .slider-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        /* Aumentar separación de las flechas */
-        .prev-btn { left: -25px; } 
-        .next-btn { right: -25px; }
+        .slider-btn:disabled { 
+            background-color: var(--grey);
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            box-shadow: none;
+        }
+        /* Ajustar posición para mayor visibilidad */
+        .prev-btn { left: 10px; } /* Más adentro */
+        .next-btn { right: 10px; } /* Más adentro */
         /* --- Fin Slider Styles --- */
 
         /* Estilos del Modal (se mantienen) */

@@ -7,6 +7,18 @@
 //     exit;
 // }
 
+// --- CORS Headers ---
+// Ajusta el origen si tu admin panel corre en un puerto diferente o dominio
+header("Access-Control-Allow-Origin: *"); // Permite cualquier origen (ajusta en producción)
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Permitir POST y OPTIONS
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+// --- Fin CORS ---
+
 header("Content-Type: application/json; charset=UTF-8");
 error_reporting(0);
 ini_set('log_errors', 1);

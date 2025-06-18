@@ -7,6 +7,18 @@
 //     exit;
 // }
 
+// --- CORS Headers ---
+// Ajusta el origen si tu admin panel corre en un puerto diferente o dominio
+header("Access-Control-Allow-Origin: *"); // Permite cualquier origen (ajusta en producción)
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Permitir POST y OPTIONS
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+// --- Fin CORS ---
+
 header("Content-Type: application/json; charset=UTF-8");
 error_reporting(0);
 ini_set('log_errors', 1);
@@ -35,12 +47,15 @@ $desc_prod = $_POST['desc_prod'] ?? '';
 $precio_prod = $_POST['precio_prod'] ?? null;
 $stock_prod = $_POST['stock_prod'] ?? null;
 $cod_cat = $_POST['cod_cat'] ?? null;
+$estado = $_POST['estado'] ?? null; // Recibir el campo estado
 
 $errors = [];
 if (empty($cod_prod)) $errors[] = "El código del producto a actualizar es obligatorio.";
 if (empty($nom_prod)) $errors[] = "El nombre del producto es obligatorio.";
 if ($precio_prod === null || !is_numeric($precio_prod) || $precio_prod < 0) $errors[] = "El precio debe ser un número válido y no negativo.";
 if ($stock_prod === null || !ctype_digit($stock_prod) || $stock_prod < 0) $errors[] = "El stock debe ser un número entero no negativo.";
+// Validar el estado
+if ($estado === null || ($estado !== 'activo' && $estado !== 'inactivo')) $errors[] = "El estado del producto es inválido.";
 
 // --- Validar Imagen (si se envió una nueva) ---
 $imagen_path_db = null; // Por defecto, no actualizamos la imagen
@@ -119,8 +134,8 @@ if ($imagen_subida) {
 
 // --- Preparar y Ejecutar Actualización en BD ---
 // Construir la consulta dinámicamente para actualizar la imagen solo si se subió una nueva
-$sql_update = "UPDATE productos SET nom_prod = ?, desc_prod = ?, precio_prod = ?, stock_prod = ?, cod_cat = ?";
-$params = [$nom_prod, $desc_prod, $precio_prod, $stock_prod, $cod_cat];
+$sql_update = "UPDATE productos SET nom_prod = ?, desc_prod = ?, precio_prod = ?, stock_prod = ?, cod_cat = ?, estado = ?"; // Añadir estado
+$params = [$nom_prod, $desc_prod, $precio_prod, $stock_prod, $cod_cat, $estado]; // Añadir estado a los parámetros
 $types = "ssdiss"; // Tipos base: s, s, d, i, s
 
 if ($imagen_subida) {
@@ -166,7 +181,8 @@ if ($stmt->execute()) {
              'precio_prod' => $precio_prod,
              'stock_prod' => $stock_prod,
              'cod_cat' => $cod_cat,
-             'imagen_prod' => $imagen_subida ? $imagen_path_db : ($ruta_imagen_antigua ? basename($ruta_imagen_antigua) : null) // Devolver nueva ruta o la antigua si no se cambió
+             'imagen_prod' => $imagen_subida ? $imagen_path_db : ($ruta_imagen_antigua ? basename($ruta_imagen_antigua) : null), // Devolver nueva ruta o la antigua si no se cambió
+             'estado' => $estado // Devolver el estado actualizado
         ]
     ]);
 

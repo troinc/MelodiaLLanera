@@ -36,8 +36,8 @@ if($result->num_rows === 1){
         $_SESSION['cod_cli'] = $user['cod_cli'];
 
         echo "<script>
-                alert('Inicio de sesión exitoso.');
-                window.location.href = 'http://localhost/InstrumentosLLaneros/home/home.htm';
+               
+                window.location.href = 'http://localhost/InstrumentosLLaneros/home/home.php';
               </script>";
     } else {
         echo "<script>

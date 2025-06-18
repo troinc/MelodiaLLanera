@@ -13,8 +13,8 @@ const menuContent = {
                     </ul>
                 </div>
             </div>
-            <div class="product-grid">
-                <!-- Los 15 productos existentes se mantienen igual -->
+            <div class="product-grid" id="product-grid-main">
+                <!-- Los productos se cargarán aquí dinámicamente por JavaScript -->
             </div>
         `
     },
@@ -92,7 +92,7 @@ const menuContent = {
                 <!-- INSTRUMENTOS DE CUERDA -->
                 <div class="detail-card" data-category="cuerdas" data-id="1">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Arpa Llanera">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Arpa Llanera">
                     </div>
                     <div class="detail-info">
                         <h2>Arpa Llanera Profesional</h2>
@@ -113,7 +113,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="2">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Cuatro Llanero">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Cuatro Llanero">
                     </div>
                     <div class="detail-info">
                         <h2>Cuatro Llanero</h2>
@@ -133,7 +133,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="4">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Bandola">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Bandola">
                     </div>
                     <div class="detail-info">
                         <h2>Bandola Llanera</h2>
@@ -153,7 +153,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="9">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Guitarra Criolla">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Guitarra Criolla">
                     </div>
                     <div class="detail-info">
                         <h2>Guitarra Criolla</h2>
@@ -173,7 +173,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="10">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Bajo Quinto">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Bajo Quinto">
                     </div>
                     <div class="detail-info">
                         <h2>Bajo Quinto Tradicional</h2>
@@ -193,7 +193,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="11">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Requinto">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Requinto">
                     </div>
                     <div class="detail-info">
                         <h2>Requinto Llanero</h2>
@@ -213,7 +213,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="14">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Tiple">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Tiple">
                     </div>
                     <div class="detail-info">
                         <h2>Tiple Colombiano</h2>
@@ -233,7 +233,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="cuerdas" data-id="15">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Mandolina">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Mandolina">
                     </div>
                     <div class="detail-info">
                         <h2>Mandolina Artesanal</h2>
@@ -254,7 +254,7 @@ const menuContent = {
                 <!-- INSTRUMENTOS DE PERCUSIÓN -->
                 <div class="detail-card" data-category="percusion" data-id="3">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Maracas">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Maracas">
                     </div>
                     <div class="detail-info">
                         <h2>Maracas Artesanales</h2>
@@ -273,7 +273,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="5">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Capachos">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Capachos">
                     </div>
                     <div class="detail-info">
                         <h2>Capachos Tradicionales</h2>
@@ -292,7 +292,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="6">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Furruco">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Furruco">
                     </div>
                     <div class="detail-info">
                         <h2>Furruco Artesanal</h2>
@@ -311,7 +311,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="7">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Tambora">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Tambora">
                     </div>
                     <div class="detail-info">
                         <h2>Tambora Llanera</h2>
@@ -330,7 +330,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="8">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Charrasca">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Charrasca">
                     </div>
                     <div class="detail-info">
                         <h2>Charrasca de Metal</h2>
@@ -349,7 +349,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="12">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Cajón Peruano">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Cajón Peruano">
                     </div>
                     <div class="detail-info">
                         <h2>Cajón Peruano</h2>
@@ -368,7 +368,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="percusion" data-id="13">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Güiro">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Güiro">
                     </div>
                     <div class="detail-info">
                         <h2>Güiro Profesional</h2>
@@ -389,7 +389,7 @@ const menuContent = {
                 <!-- INSTRUMENTOS DE VIENTO (Asumiendo IDs ficticios) -->
                 <div class="detail-card" data-category="viento" data-id="16">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Flauta Llanera">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Flauta Llanera">
                     </div>
                     <div class="detail-info">
                         <h2>Flauta Llanera Tradicional</h2>
@@ -408,7 +408,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="viento" data-id="17">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Quena">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Quena">
                     </div>
                     <div class="detail-info">
                         <h2>Quena Tradicional</h2>
@@ -430,7 +430,7 @@ const menuContent = {
                 <!-- INSTRUMENTOS TRADICIONALES (Asumiendo IDs ficticios) -->
                 <div class="detail-card" data-category="tradicionales" data-id="18">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Sistro">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Sistro">
                     </div>
                     <div class="detail-info">
                         <h2>Sistro del Llano</h2>
@@ -451,7 +451,7 @@ const menuContent = {
                 </div>
                 <div class="detail-card" data-category="tradicionales" data-id="19">
                     <div class="detail-image">
-                        <img src="https://placehold.co/400x400/png" alt="Quitiplas">
+                        <img src="/InstrumentosLLaneros/uploads/products/prod_1_6828b243d0daa_Imagen_de_WhatsApp_2025_01_27_a_las_14.03.49_635a3b45.jpg" alt="Quitiplas">
                     </div>
                     <div class="detail-info">
                         <h2>Quitiplas Tradicionales</h2>
@@ -1010,6 +1010,76 @@ const menuContent = {
     }
 };
 
+// Define API base URL (similar a admin-mode)
+const API_BASE_URL = 'http://localhost/InstrumentosLLaneros'; // Asegurar que la base URL es correcta
+
+// --- Funciones para cargar y mostrar productos ---
+
+async function loadProducts() {
+    console.log("Iniciando carga de productos para la página principal...");
+    const productGrid = document.getElementById('product-grid-main');
+    if (!productGrid) {
+        console.error("Elemento #product-grid-main no encontrado.");
+        return;
+    }
+
+    productGrid.innerHTML = '<p>Cargando productos...</p>'; // Mensaje de carga
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/php/cargar_productos.php`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
+        }
+        const data = await response.json();
+
+        if (data.status === 'success' && Array.isArray(data.productos)) {
+            console.log("Productos recibidos de BD:", data.productos);
+            let productsHTML = '';
+            if (data.productos.length > 0) {
+                data.productos.forEach(producto => {
+                    // Asegurarse de que el estado sea 'activo' para mostrar
+                    if (producto.estado === '1' || producto.estado === 1 || producto.estado === 'activo') {
+                         // Formatear precio
+                         const formattedPrice = parseFloat(producto.precio_prod).toLocaleString('es-CO', {
+                             style: 'currency',
+                             currency: 'COP', // O la moneda que uses
+                             minimumFractionDigits: 0, // Ajusta si necesitas decimales
+                             maximumFractionDigits: 0,
+                         });
+
+                        productsHTML += `
+                            <div class="product-card" data-id="${producto.cod_prod}">
+                                ${producto.imagen_prod ?
+                                    `<div class="product-image-container"><img src="${producto.imagen_prod.startsWith('http') ? producto.imagen_prod : `${API_BASE_URL}/${producto.imagen_prod}`}" alt="${producto.nom_prod}"></div>` :
+                                    `<div class="product-image-container placeholder"><span>300 x 300</span></div>`
+                                }
+                                <h3>${producto.nom_prod}</h3>
+                                <p class="price">${formattedPrice}</p>
+                                <p class="stock">Stock: <span>${producto.stock_prod}</span></p>
+                                <button class="add-to-cart">Añadir al Carrito</button>
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                productsHTML = '<p>No hay productos disponibles en este momento.</p>';
+            }
+            productGrid.innerHTML = productsHTML;
+            // Re-adjuntar listeners de "Añadir al Carrito" si es necesario,
+            // aunque el listener global en el documento ya debería manejarlos.
+
+        } else {
+            throw new Error(data.message || 'Formato de respuesta inesperado al cargar productos.');
+        }
+    } catch (err) {
+        console.error('Error al cargar productos para la página principal:', err);
+        productGrid.innerHTML = `<p style="color: red;">Error al cargar productos: ${err instanceof Error ? err.message : String(err)}</p>`;
+    }
+}
+
+// --- Fin Funciones para cargar y mostrar productos ---
+
 // Get all menu items
 const menuItems = document.querySelectorAll('.side-menu.top li a');
 const mainContent = document.querySelector('main');
@@ -1094,6 +1164,7 @@ async function loadCartFromDB() {
                 price: parseFloat(item.precio_unitario),
                 quantity: parseInt(item.cantidad, 10), // Asegurar que cantidad sea entero
                 stock: parseInt(item.stock_disponible, 10), // Asegurar que stock sea entero
+                imagen_prod: item.imagen_prod, // Añadir la URL de la imagen
                 // Añadir priceFormatted si no viene del backend
                 priceFormatted: item.priceFormatted || '$' + parseFloat(item.precio_unitario).toLocaleString('es-CO')
             }));
@@ -1163,6 +1234,11 @@ menuItems.forEach(item => {
         // Update main content if content exists for this menu item
         if (menuContent[menuText]) {
             mainContent.innerHTML = menuContent[menuText].content;
+
+            // Si cambiamos a la página de productos, cargar los productos dinámicamente
+            if (menuText === 'productos') {
+                loadProducts();
+            }
             
             // Si cambiamos a cualquier página que *no sea* el carrito, guardar el estado actual
             if (menuText !== 'compras') {
@@ -1598,7 +1674,7 @@ function updateCart() {
                 
                 cartHTML += `
                     <div class="cart-item" style="display:flex; margin-bottom:10px; align-items:center;">
-                        <img src="${item.image}" alt="${item.name}" style="width:40px; height:40px; margin-right:10px;">
+                        <img src="${API_BASE_URL}/${item.imagen_prod}" alt="${item.name}" style="width:40px; height:40px; margin-right:10px;">
                         <div class="item-details" style="flex-grow:1;">
                             <p style="margin:0; font-size:0.9em; color: var(--dark);">${item.name}</p>
                             <p style="margin:0; color:var(--blue); font-weight:bold;">${item.priceFormatted || '$' + item.price.toLocaleString()}</p>
@@ -1669,7 +1745,7 @@ function updateCart() {
                 
                 cartHTML += `
                     <div class="cart-item" style="display:flex; margin-bottom:20px; padding:15px; background:var(--grey); border-radius:10px; align-items:center;">
-                        <img src="${item.image}" alt="${item.name}" style="width:80px; height:80px; margin-right:20px; border-radius:5px;">
+                        <img src="${API_BASE_URL}/${item.imagen_prod}" alt="${item.name}" style="width:80px; height:80px; margin-right:20px; border-radius:5px;">
                         <div class="item-details" style="flex-grow:1;">
                             <h4 style="margin:0 0 10px 0; color: var(--dark);">${item.name}</h4>
                             <p style="margin:0; color:var(--blue); font-weight:bold; font-size:1.1em;">${item.priceFormatted || '$' + item.price.toLocaleString()}</p>
@@ -1784,7 +1860,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Cargar el carrito pendiente desde la BD
     await loadCartFromDB();
 
-    // 2. Marcar la página inicial (Productos) como activa
+    // 2. Cargar y mostrar los productos en la página inicial
+    await loadProducts(); // Llamar a la nueva función aquí
+
+    // 3. Marcar la página inicial (Productos) como activa
     // Selector más robusto
     const menuLinks = document.querySelectorAll('.side-menu.top li a .text');
     let productosMenuItemLi = null;
@@ -1807,7 +1886,7 @@ document.addEventListener('DOMContentLoaded', async () => {
          console.warn('No se pudo encontrar el item de menú Productos para marcarlo como activo.');
     }
 
-    // 3. Inicializar el buscador (si existe en la página inicial)
+    // 4. Inicializar el buscador (si existe en la página inicial)
     const searchInput = document.querySelector('#content nav form input');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
@@ -1825,10 +1904,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // 4. Inicializar otros componentes si es necesario (ej. perfil si se carga por defecto)
+    // 5. Inicializar otros componentes si es necesario (ej. perfil si se carga por defecto)
     // updateCart(); // Ya se llama dentro de loadCartFromDB
 
-     // 5. Adjuntar listener al evento beforeunload para un último intento de guardado
+     // 6. Adjuntar listener al evento beforeunload para un último intento de guardado
      // ¡OJO! Esto no garantiza el guardado, especialmente en móviles.
      window.addEventListener('beforeunload', (event) => {
          // No podemos hacer llamadas async aquí de forma fiable.
@@ -1840,12 +1919,12 @@ document.addEventListener('DOMContentLoaded', async () => {
          // saveCartToDB.flush(); // Podría no completarse
      });
 
-    // --- Configurar Botón Logout AHORA que el DOM está listo --- 
+    // --- Configurar Botón Logout AHORA que el DOM está listo ---
     const profileMenuContainer = document.getElementById('profileMenu');
     let logoutButton = null;
     if (profileMenuContainer) {
         // Usar el ID específico del enlace
-        logoutButton = document.getElementById('logoutButton'); 
+        logoutButton = document.getElementById('logoutButton');
     }
     const confirmLogoutButton = document.getElementById('confirmLogout');
     const cancelLogoutButton = document.getElementById('cancelLogout');
@@ -1927,3 +2006,36 @@ async function handleLogout() {
 }
 
 // (Se eliminó la segunda definición de debounce que estaba aquí)
+
+// Lógica para el modal de configuración
+document.addEventListener('DOMContentLoaded', () => {
+    const headerSettingsButton = document.getElementById('headerSettingsButton');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeButton = document.getElementById('closeSettingsModal');
+    const toggleThemeButton = document.getElementById('toggleTheme');
+
+    if (headerSettingsButton && settingsModal && closeButton) {
+        headerSettingsButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            settingsModal.style.display = 'block';
+        });
+
+        closeButton.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Lógica para cambiar el tema (ejemplo simple)
+    if (toggleThemeButton) {
+        toggleThemeButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            alert('Tema cambiado (funcionalidad básica)');
+        });
+    }
+});

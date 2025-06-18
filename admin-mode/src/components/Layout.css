@@ -33,13 +33,17 @@ li {
 }
 
 html {
-    overflow-x: hidden;
+    overflow: hidden !important; /* Force hide all overflow */
+    width: 100%; /* Ensure html takes full width */
+    box-sizing: border-box; /* Include padding and border in element's total width */
 }
 
 body {
     background: var(--grey);
-    overflow-x: hidden;
+    overflow: hidden !important; /* Force hide all overflow */
     font-family: var(--lato);
+    width: 100%; /* Ensure body takes full width */
+    box-sizing: border-box; /* Include padding and border in element's total width */
 }
 
 /* SIDEBAR */
@@ -288,7 +292,7 @@ body {
     padding: 36px 24px;
     font-family: var(--poppins);
     max-height: calc(100vh - 56px);
-    overflow-y: auto;
+    overflow: hidden; /* Remove both vertical and horizontal scrollbars */
     background: var(--grey);
     color: var(--dark);
 }

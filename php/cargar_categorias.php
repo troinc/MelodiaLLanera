@@ -1,4 +1,16 @@
 <?php
+// --- CORS Headers ---
+// Ajusta el origen si tu admin panel corre en un puerto diferente o dominio
+header("Access-Control-Allow-Origin: http://localhost:3001"); // Permitir solicitudes desde el frontend de admin en puerto 3001
+header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+// --- Fin CORS ---
+
 header("Content-Type: application/json; charset=UTF-8");
 error_reporting(0);
 ini_set('log_errors', 1);

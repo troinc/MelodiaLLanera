@@ -4,7 +4,7 @@ import { FiPlus, FiEdit, FiTrash2, FiSearch } from 'react-icons/fi';
 // Definición del tipo Usuario
 interface Usuario {
   id: string; // O number, dependiendo de tu BD
-  nombre_usuario: string;
+  // nombre_usuario: string; // Removed as per user request
   correo_electronico: string;
   rol: 'administrador' | 'cliente'; // Ajusta los roles según tu sistema
   fecha_registro: string; // O Date
@@ -30,8 +30,8 @@ const Usuarios: React.FC = () => {
   useEffect(() => {
     let result = usuarios;
     if (searchTerm) {
+      // Filtrar solo por correo electrónico
       result = usuarios.filter(usuario =>
-        usuario.nombre_usuario.toLowerCase().includes(searchTerm.toLowerCase()) ||
         usuario.correo_electronico.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -42,7 +42,7 @@ const Usuarios: React.FC = () => {
   const fetchUsuarios = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/php/cargar_usuarios.php');
+      const response = await fetch('http://localhost/InstrumentosLLaneros/php/cargar_usuarios.php'); // Ajustado a URL absoluta
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
@@ -51,9 +51,9 @@ const Usuarios: React.FC = () => {
       if (data.status === 'success') {
         const mappedData = data.usuarios.map((item: any) => ({
           id: item.cod_cli,
-          nombre_usuario: `${item.nom_cli} ${item.ape_cli}`,
+          // nombre_usuario: `${item.nom_cli} ${item.ape_cli}`, // Removed mapping
           correo_electronico: item.email_cli,
-          rol: 'cliente',
+          rol: item.rol || 'cliente', // Use role from DB if available, default to 'cliente'
           fecha_registro: item.fecha_registro || new Date().toISOString().split('T')[0],
           estado: item.estado || 'activo'
         }));
@@ -87,7 +87,7 @@ const Usuarios: React.FC = () => {
     if (!window.confirm('¿Está seguro de eliminar este usuario?')) return;
 
     try {
-      const response = await fetch('/php/eliminar_usuario.php', { // Ajusta la ruta si es necesario
+      const response = await fetch('http://localhost/InstrumentosLLaneros/php/eliminar_usuario.php', { // Ajustado a URL absoluta
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,14 +117,19 @@ const Usuarios: React.FC = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const data: { [key: string]: any } = {};
-    formData.forEach((value, key) => { data[key] = value; });
+    formData.forEach((value, key) => { 
+      // Exclude nombre_usuario if it somehow exists in the form data
+      if (key !== 'nombre_usuario') {
+        data[key] = value; 
+      }
+    });
 
     // Determinar la URL y el cuerpo de la solicitud
-    let url = '/php/insertar_usuario_admin.php'; // Script para añadir admin
+    let url = 'http://localhost/InstrumentosLLaneros/php/insertar_usuario_admin.php'; // Ajustado a URL absoluta
     let body: any = data;
 
     if (isEditing && currentUser) {
-      url = '/php/actualizar_usuario.php'; // Script para editar cualquier usuario
+      url = 'http://localhost/InstrumentosLLaneros/php/actualizar_usuario.php'; // Ajustado a URL absoluta
       body.id_usuario = currentUser.id; // Añadir el ID para actualizar
     }
 
@@ -182,7 +187,7 @@ const Usuarios: React.FC = () => {
           </span>
           <input
             type="text"
-            placeholder="Buscar por nombre de usuario, correo..."
+            placeholder="Buscar por correo electrónico..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-custom-dark-grey rounded-lg bg-custom-light text-custom-dark focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent"
@@ -210,7 +215,7 @@ const Usuarios: React.FC = () => {
             <thead className="bg-custom-grey">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-custom-dark-grey uppercase tracking-wider">ID</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-custom-dark-grey uppercase tracking-wider">Nombre Usuario</th>
+                {/* Removed Nombre Usuario column */}
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-custom-dark-grey uppercase tracking-wider">Correo Electrónico</th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-custom-dark-grey uppercase tracking-wider">Rol</th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-custom-dark-grey uppercase tracking-wider">Fecha Registro</th>
@@ -223,7 +228,7 @@ const Usuarios: React.FC = () => {
                 filteredUsuarios.map((usuario) => (
                   <tr key={usuario.id} className="hover:bg-custom-grey transition duration-150 ease-in-out">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-custom-dark">{usuario.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark">{usuario.nombre_usuario}</td>
+                    {/* Removed Nombre Usuario cell */}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark-grey">{usuario.correo_electronico}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark-grey">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${usuario.rol === 'administrador' ? 'bg-blue-100 text-custom-blue' : 'bg-green-100 text-green-800'}`}>
@@ -232,9 +237,10 @@ const Usuarios: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark-grey">{new Date(usuario.fecha_registro).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-custom-dark-grey">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${usuario.estado === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-custom-red'}`}>
-                        {usuario.estado}
-                      </span>
+                      <div className="flex items-center">
+                        <span className={`h-3 w-3 rounded-full mr-2 ${usuario.estado === 'activo' ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                        <span>{usuario.estado.charAt(0).toUpperCase() + usuario.estado.slice(1)}</span>
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
@@ -258,7 +264,8 @@ const Usuarios: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-6 py-4 text-center text-sm text-custom-dark-grey">
+                  {/* Adjusted colSpan from 7 to 6 */}
+                  <td colSpan={6} className="px-6 py-4 text-center text-sm text-custom-dark-grey">
                     No hay usuarios que coincidan con la búsqueda o no hay usuarios registrados.
                   </td>
                 </tr>
@@ -288,20 +295,8 @@ const Usuarios: React.FC = () => {
               {isEditing ? 'Editar Usuario' : 'Nuevo Usuario Administrador'}
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-custom-dark text-sm font-bold mb-2" htmlFor="nombre_usuario">
-                    Nombre de Usuario
-                  </label>
-                  <input
-                    type="text"
-                    id="nombre_usuario"
-                    name="nombre_usuario"
-                    defaultValue={currentUser?.nombre_usuario || ''}
-                    className="shadow-sm appearance-none border border-custom-dark-grey rounded w-full py-2 px-3 text-custom-dark bg-custom-grey leading-tight focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent"
-                    required
-                  />
-                </div>
+              {/* Grid layout adjusted for single column */}
+              <div className="grid grid-cols-1 gap-4 mb-4">
                 <div>
                   <label className="block text-custom-dark text-sm font-bold mb-2" htmlFor="correo_electronico">
                     Correo Electrónico
@@ -316,6 +311,8 @@ const Usuarios: React.FC = () => {
                   />
                 </div>
               </div>
+
+              {/* Removed the duplicated 'Nombre de Usuario' field block */}
 
               <div className="mb-4">
                 <label className="block text-custom-dark text-sm font-bold mb-2" htmlFor="contrasena">

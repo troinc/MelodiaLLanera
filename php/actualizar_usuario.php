@@ -1,6 +1,11 @@
 <?php
+// Asegurar que la respuesta sea siempre JSON
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
+// Suprimir errores HTML de PHP para evitar romper el JSON
+ini_set('display_errors', 0);
+error_reporting(0);
+
+header("Access-Control-Allow-Origin: *"); // Considera restringir esto en producción
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -9,40 +14,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/../conexion.php';
+$response = ['status' => 'error', 'message' => 'Error inicial al procesar la solicitud.'];
 
-$response = ['status' => 'error', 'message' => 'Error al actualizar usuario.'];
+try {
+    require_once __DIR__ . '/../conexion.php';
 
-$data = json_decode(file_get_contents('php://input'), true);
+    // Verificar conexión después de incluir
+    if ($conexion->connect_error) {
+        throw new Exception('Error de conexión: ' . $conexion->connect_error);
+    }
 
-if ($data) {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if ($data) {
     $id = $data['id_usuario'] ?? '';
-    $nombre = $data['nombre_usuario'] ?? '';
+    // $nombre = $data['nombre_usuario'] ?? ''; // Removed nombre
     $correo = $data['correo_electronico'] ?? '';
     $contrasena = $data['contrasena'] ?? '';
-    $rol = $data['rol'] ?? 'cliente';
-    $estado = $data['estado'] ?? 'activo';
+    // $rol = $data['rol'] ?? 'cliente'; // Removed rol
+    // $estado = $data['estado'] ?? 'activo'; // Removed estado
     
-    // Validar datos
-    if (empty($id) || empty($nombre) || empty($correo)) {
-        $response['message'] = 'ID, nombre y correo son obligatorios';
+    // Validar datos (removed nombre check)
+    if (empty($id) || empty($correo)) {
+        $response['message'] = 'ID y correo son obligatorios';
         echo json_encode($response);
         exit;
     }
     
-    // Separar nombre y apellido (asumiendo formato "Nombre Apellido")
-    $partes = explode(' ', $nombre, 2);
-    $nom_cli = $partes[0] ?? '';
-    $ape_cli = $partes[1] ?? '';
+    // Removed nombre/apellido separation
     
-    // Preparar consulta SQL
-    $query = "UPDATE clientes SET nom_cli = ?, ape_cli = ?, email_cli = ?, rol = ?, estado = ?";
-    $params = [$nom_cli, $ape_cli, $correo, $rol, $estado];
+    // Preparar consulta SQL (removed nom_cli, ape_cli, rol, estado)
+    $query = "UPDATE clientes SET email_cli = ?";
+    $params = [$correo];
     
     // Si hay contraseña, actualizarla
     if (!empty($contrasena)) {
         $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
-        $query .= ", contrasena_cli = ?";
+        $query .= ", password = ?";
         $params[] = $contrasena_hash;
     }
     
@@ -52,7 +60,13 @@ if ($data) {
     $stmt = $conexion->prepare($query);
     
     if ($stmt) {
-        $types = str_repeat('s', count($params));
+        // Adjust types string based on remaining params + potential password + id
+        $types = 's'; // For email
+        if (!empty($contrasena)) {
+            $types .= 's'; // Add type for password
+        }
+        $types .= 's'; // Add type for id
+        
         $stmt->bind_param($types, ...$params);
         
         if ($stmt->execute()) {
@@ -64,8 +78,16 @@ if ($data) {
     } else {
         $response['message'] = 'Error al preparar la consulta: ' . $conexion->error;
     }
+    $conexion->close(); // Cerrar conexión
 } else {
-    $response['message'] = 'Datos no recibidos correctamente';
+    $response['message'] = 'Datos no recibidos o incompletos.';
+}
+
+} catch (Exception $e) {
+    // Capturar cualquier excepción (incluyendo errores de conexión o consulta)
+    http_response_code(500); // Internal Server Error
+    $response['status'] = 'error';
+    $response['message'] = 'Error interno del servidor: ' . $e->getMessage();
 }
 
 echo json_encode($response);

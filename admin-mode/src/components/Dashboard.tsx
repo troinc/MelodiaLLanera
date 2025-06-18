@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
     try {
       setLoading(true);
       // Asegúrate que la ruta al PHP sea correcta
-      const response = await fetch('/php/cargar_dashboard_stats.php'); // Ajusta la ruta si es necesario
+      const response = await fetch('http://localhost/InstrumentosLLaneros/php/cargar_dashboard_stats.php'); // Ajusta la ruta si es necesario
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
@@ -167,11 +167,11 @@ const Dashboard: React.FC = () => {
       <div className="bg-custom-light p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold text-custom-dark mb-4">Accesos Rápidos</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <a href="/admin/productos" className="flex items-center p-4 bg-custom-grey rounded-lg hover:bg-custom-dark-grey transition duration-150">
+          <a href="/productos" className="flex items-center p-4 bg-custom-grey rounded-lg hover:bg-custom-dark-grey transition duration-150">
             <FiPlus className="h-5 w-5 text-custom-blue mr-3" />
             <span className="text-custom-dark font-medium">Agregar Nuevo Producto</span>
           </a>
-          <a href="/admin/usuarios" className="flex items-center p-4 bg-custom-grey rounded-lg hover:bg-custom-dark-grey transition duration-150">
+          <a href="/usuarios" className="flex items-center p-4 bg-custom-grey rounded-lg hover:bg-custom-dark-grey transition duration-150">
             <FiEye className="h-5 w-5 text-custom-blue mr-3" />
             <span className="text-custom-dark font-medium">Ver Usuarios Recientes</span>
           </a>
